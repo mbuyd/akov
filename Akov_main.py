@@ -1,25 +1,71 @@
 import discord
 import random
 import os
-from discord.ext import commands
+from discord.ext import commands, tasks
+from itertools import cycle
+client = discord.Client()
+Prefix = "." 
+ 
+client = commands.Bot(command_prefix = Prefix)
+activity = ["with your mom", "with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "with Balls", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with Akov's reproduction cycle", "with my own code"]
+status = cycle(activity)
 
-client = commands.Bot(command_prefix = ".")
+author = message.author
+message.content = message.content.lower()
+
 
 @client.event
 async def on_ready():
+    change_status.start
+    await client.change_presence(activity=discord.Game(random.choice(activity)))
     print('We have logged in as {0.user}'.format(client))
-
+    return
 
 @client.event
 async def on_member_join(member):
     print(f'{member} has joined the server.')
     return
     
-
 @client.event
 async def on_remember_remove(member):
     print(f'{member} has left the server.')
     return
+
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    elif random.random() < 0.001:
+        funfact = [f"<@{message.author.id}> \n **¡Apuesto a que no sabias que yo era parte de la inquisicion espanola!**",
+                   f"<@{message.author.id}> Have I ever told you the story of darth plageous the black death?",
+                   f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today",
+                   f"<@{message.author.id}> **DID YOU KNOW #19742 \n This portion of code was actually yeeted off of Leo's bot "
+                   ]
+        await message.channel.send(random.choice(funfact))
+        return
+
+    elif message.content.endswith("tonight"):
+        comments = [f"<@{message.author.id}> Hey man, go do your home work",
+                    f"<@{message.author.id}> Late to the game as always",
+                    f"<@{message.author.id}> not today, sorry",
+                    ]
+        if random.random() < 0.05:
+            await message.channel.send(random.choice(comments))
+            return
+
+    elif "among us" in message.content.lower():
+        if random.random() < 0.0333:
+            await message.channel.send(f"<@{message.author.id}> Kinda sus of you to mention that game")
+            return
+
+    elif message.content.endswith("pic"):
+        await message.channel.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
+        pass
+
+    await client.process_commands(message)
+
 
 @client.command()
 async def clear(ctx, amount=5):
@@ -32,10 +78,27 @@ async def bing(ctx):
     await ctx.send(f"Bong! {round(client.latency *1000)} ms" )
     return
 
-@client.command(aliases=["is","check"])
-async def ball(ctx,*, question):
-    responses=["yes", "definitely", "yes"]
-    await ctx.send(f"You asked: {question} \n Your answer is: {random.choice(responses)}")
+@client.command()
+async def ping(ctx):
+    await ctx.send(f"Yikes, look like your Pong is overdue \n {round(client.latency *69420)} ms \n \n \n try *Bonging* next time instead")
+    return
+
+@client.command()
+async def pic(ctx):
+    await ctx.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
+
+@client.command()
+async def record(ctx):
+    print(ctx.channel)
+    print(ctx.author)
+    print(ctx.message.content)
+    await ctx.send("message recorded")
+    return
+
+@client.command()
+async def query(ctx,*, question):
+    responses=["yes", "definitely", "Perhaps", "No", "Let me ask my manager \n \n \n \n he said no", "Let me ask my manager \n \n \n \n he said yeah, aslong as you take off your shoes", "I highly doubt it", "I usually know the answer to these \n but your presence is throwing me off", "96% \n sure", "The answer is 42", "When in doubt, go figure it out","Its a yes, but Wikipedia is not a reliable source","Ask Leo's bot, I gave him all the answers",]
+    await ctx.send(f"Heres what I think about: {question} \n  {random.choice(responses)}")
     return
 
 @client.command()
@@ -60,18 +123,9 @@ async def unban(ctx, *, member):
             await ctx.send(f"{user.mention} was unbanned")
             return
 
-@client.command
-async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
 
-@client.command
-async def unload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-
-
-
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f'cogs.{filename[:-3]}')
-
-client.run("NzI3NjAzMTA0ODA3MjU2MTY4.XvuPog.H5ZZSrgmCH6oK2ndsTHeYz7yK3U")
+@tasks.loop(hours=24)
+async def change_status():
+    await client.change_presence(activity=discord.Game(next(activity)))
+    
+client.run("token")
