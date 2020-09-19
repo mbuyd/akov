@@ -3,15 +3,15 @@ import random
 import os
 from discord.ext import commands, tasks
 from itertools import cycle
+
 client = discord.Client()
 Prefix = "." 
- 
 client = commands.Bot(command_prefix = Prefix)
+client.remove_command("help")
+
 activity = ["with your mom", "with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "with Balls", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with Akov's reproduction cycle", "with my own code"]
 status = cycle(activity)
 
-author = message.author
-message.content = message.content.lower()
 
 
 @client.event
@@ -102,30 +102,57 @@ async def query(ctx,*, question):
     return
 
 @client.command()
-async def kick(ctx, member : discord.Member, *, reason=None):
-    await member.kick(reason=reason)
+async def dice(ctx):
+    dice=["1", "2", "3", "4", "5", "6"]
+    await ctx.send(f"You got a  {random.choice(dice)}")
     return
 
 @client.command()
-async def ban(ctx, member : discord.Member, *, reason=None):
-    await member.ban(reason=reason)
-    await ctx.send(f"{member.mention} was banned for {reason}")
+async def cointoss(ctx):
+    coin=["Heads","Tails"]
+    await ctx.send(f"The coin has landed  {random.choice(Coin)}")
     return
 
-@client.command()
-async def unban(ctx, *, member):
-    banned_users = await ctx.guild.bans()
-    member_name, member_discriminator = member.split("#")
-    for ban_entry in banned_users:
-        user = ban.entry.user
-        if(user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.send(f"{user.mention} was unbanned")
-            return
+@client.command(pass_context=True)
+async def help(ctx):
+    author = ctx.message.author
 
+    embed1 = discord.Embed(color = discord.Color.dark_blue())
+
+    embed1.set_author(name="Help")
+    embed1.add_field(name=".bing", value="Returns Bong count", inline=False)
+    embed1.add_field(name='.record "type the message here" ', value='Leave a message for Akov', inline=False)
+    embed1.add_field(name='.query "type the question here"', value="Ask Akov a question", inline=False)
+    embed1.add_field(name=".pic", value="Request an image of something EpIc", inline=False)
+    embed1.add_field(name=".clear", value="clear some messages", inline=False)
+    embed1.add_field(name=".dice", value="Roll the dice", inline=False)
+    embed1.add_field(name=".cointoss", value="Toss a coin", inline=False)
+    embed1.add_field(name=".rules", value="Follow these rules", inline=False)
+    embed1.add_field(name=".help", value="Get some help", inline=False)
+
+    await ctx.send(author, embed=embed1)
+
+@client.command(pass_context=True)
+async def rules(ctx):
+    author = ctx.message.author
+
+    embed2 = discord.Embed(color = discord.Color.dark_blue())
+
+    embed2.set_author(name="Rules")
+    embed2.add_field(name="[1.]", value="Use common sense", inline=False)
+    embed2.add_field(name="[2.]", value="Don't not use common sense", inline=False)
+    embed2.add_field(name="[3.]", value="Annoy Leo aka @drongo", inline=False)
+    embed2.add_field(name="[4.]", value="Follow the three rules listed above", inline=False)
+    embed2.add_field(name="[5.]", value="Do not question the rules, you are playing with fire", inline=False)
+    embed2.add_field(name="[7.]", value="Leo's order is not absolute", inline=False)
+    embed2.add_field(name="[6.]", value="Rule 7 preceds rule 6", inline=False)
+
+
+    await ctx.send(author, embed=embed2)
 
 @tasks.loop(hours=24)
 async def change_status():
     await client.change_presence(activity=discord.Game(next(activity)))
+
     
 client.run("token")
