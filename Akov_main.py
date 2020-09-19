@@ -41,7 +41,7 @@ async def on_message(message):
         funfact = [f"<@{message.author.id}> \n **¡Apuesto a que no sabias que yo era parte de la inquisicion espanola!**",
                    f"<@{message.author.id}> Have I ever told you the story of darth plageous the black death?",
                    f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today",
-                   f"<@{message.author.id}> **DID YOU KNOW #19742 \n This portion of code was actually yeeted off of Leo's bot "
+                   f"<@{message.author.id}> **DID YOU KNOW #19742** \n This portion of code was actually yeeted off of Leo's bot "
                    ]
         await message.channel.send(random.choice(funfact))
         return
