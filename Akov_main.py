@@ -9,7 +9,7 @@ Prefix = "."
 client = commands.Bot(command_prefix = Prefix)
 client.remove_command("help")
 
-activity = ["with your mom", "with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "with Balls", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with Akov's reproduction cycle", "with my own code"]
+activity = ["with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with my own code", "COC", "Ball"]
 status = cycle(activity)
 
 
@@ -114,6 +114,13 @@ async def cointoss(ctx):
     return
 
 @client.command(pass_context=True)
+async def message(ctx,*, message):
+    author = ctx.message.author
+    await author.send(f"{message}")
+    await ctx.send ("message sent to DMs")
+    return
+
+@client.command(pass_context=True)
 async def help(ctx):
     author = ctx.message.author
 
@@ -123,6 +130,7 @@ async def help(ctx):
     embed1.add_field(name=".bing", value="Returns Bong count", inline=False)
     embed1.add_field(name='.record "type the message here" ', value='Leave a message for Akov', inline=False)
     embed1.add_field(name='.query "type the question here"', value="Ask Akov a question", inline=False)
+    embed1.add_field(name='.message "type the message here"', value="send yourself a dm", inline=False)
     embed1.add_field(name=".pic", value="Request an image of something EpIc", inline=False)
     embed1.add_field(name=".clear", value="clear some messages", inline=False)
     embed1.add_field(name=".dice", value="Roll the dice", inline=False)
