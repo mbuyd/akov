@@ -2,6 +2,7 @@
 import discord
 import random
 import os
+import json
 from discord.ext import commands, tasks
 from discord.utils import get
 from itertools import cycle
@@ -177,9 +178,7 @@ async def rules(ctx):
 @client.command(pass_context=True)
 async def tip(ctx):
     author = ctx.message.author
-    tip = [
-        "Use Common Sense sometimes","Avoid Spotify and Youtube Premium by making a playlist on Youtube then ask Leo's Boombox to play the playlist", "Start a Roth IRA account", "invest in Doge Coin", "Bros come before Hoes", "Don't get hooked of Heroin", "Just do it", "Set Goals", "Do **Not** visit North Korea", "Do **Not** intervene in the election process","Avoid income tax by not getting paid", "If you are allergic to peanuts \n Don't eat them", "Minecraft", "Try Roblox", "Subscribe to Dudes of 708","Check out our website @7o8.tech","Become a Patreon", "Avoid salty food items when diagnosed with hyertension", "Don't use Q-tips in your ears","Buy some of Leo's Bathwater", "Set Goals","Set Routines","Take advantage of opportunities", "Avoid Jeff","ping <@!578715287491182595>","Don't eat Legos","Wear a mask","Use protection","Send an anonymous message to @drongo using @akov", "donate to <@!578715287491182595> so he can get a new body pillow", "Check out our instagram page @dudesof708","Check out Max's instagram & facebook photography account @maxpressphotography","Make sure to follow rule #6","Use the help command on any bot to trigger a help message","La biblioteca esta ahi", "bing dont ping", "type .tip for more awesome tips"
-    ]
+    tip = json.load(open("Arrays/links.json", "r"))["link"]
     embed3 = discord.Embed(color = discord.Color.dark_blue())
     embed3.add_field(name=(f"Tip #{round(random.random()*1000)}"), value=random.choice(tip), inline=False)
     await ctx.send(author, embed=embed3)
