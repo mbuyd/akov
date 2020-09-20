@@ -153,6 +153,7 @@ async def help(ctx):
     embed1.add_field(name='.pnote "type the private note here"', value="send yourself a private note in dm", inline=False)
     #embed1.add_field(name='.pm "type the anonymous message here"', value="send someone an anonymous dm", inline=False)    
     embed1.add_field(name=".pic", value="Request an image of something EpIc", inline=False)
+    embed1.add_field(name=".meme", value="Look @ some **haha**", inline=False)
     embed1.add_field(name=".clear", value="clear some messages", inline=False)
     embed1.add_field(name=".dice", value="Roll the dice", inline=False)
     embed1.add_field(name=".cointoss", value="Toss a coin", inline=False)
@@ -178,9 +179,17 @@ async def rules(ctx):
 @client.command(pass_context=True)
 async def tip(ctx):
     author = ctx.message.author
-    tip = json.load(open("Arrays/links.json", "r"))["link"]
+    tip = json.load(open("Arrays/tip.json", "r"))["tip"]
     embed3 = discord.Embed(color = discord.Color.dark_blue())
     embed3.add_field(name=(f"Tip #{round(random.random()*1000)}"), value=random.choice(tip), inline=False)
+    await ctx.send(author, embed=embed3)
+
+@client.command(pass_context=True)
+async def meme(ctx):
+    author = ctx.message.author
+    tip = json.load(open("Arrays/meme.json", "r"))["meme"]
+    embed3 = discord.Embed(color = discord.Color.dark_blue())
+    embed3.add_field(name=(f"Meme #{round(random.random()*1000)}"), value=random.choice(meme), inline=False)
     await ctx.send(author, embed=embed3)
 
 @tasks.loop(hours=24)
