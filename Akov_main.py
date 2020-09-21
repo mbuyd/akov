@@ -9,7 +9,7 @@ from itertools import cycle
 
 client = commands.Bot(command_prefix = ".")
 
-
+Token = json.load(open("secrets.json", "r"))["secret"]
 
 
 activity = ["with your mom", "with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "with Balls", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with Akov's reproduction cycle", "with my own code", "COC"]
@@ -183,4 +183,4 @@ async def rules(ctx):
     await ctx.send(author, embed=embed2)
 
     
-client.run("token")
+client.run(Token)
