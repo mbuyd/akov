@@ -9,10 +9,10 @@ from itertools import cycle
 
 client = commands.Bot(command_prefix = ".")
 
-Token = json.load(open("secrets.json", "r"))["secret"]
+Token = json.load(open("secrets.json", "r"))["Token"]
 
 
-activity = ["with your mom", "with plutonium rods", "the game of LIFE", "Minecraft", "Spotify", "Ping-Pong", "with Balls", "dead", "BIOCHEMISTRY: A SHORT COURSE by John L. Tymoczko, Jeremy M. Berg, and Lubert Stryer", "against Albert", "someone's nerves", "with Akov's reproduction cycle", "with my own code", "COC"]
+activity = json.load(open("Arrays/activity.json", "r"))["activity"]
 status = cycle(activity)
 
 @client.event
@@ -79,14 +79,14 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w39a")
+    await ctx.send("20w39b")
 
 #############################################
 
 @client.command()
 async def query(ctx,*, question):
-    responses=["yes", "definitely", "Perhaps", "No", "Let me ask my manager \n \n \n \n he said no", "Let me ask my manager \n \n \n \n he said yeah, aslong as you take off your shoes", "I highly doubt it", "I usually know the answer to these \n but your presence is throwing me off", "96% \n sure", "The answer is 42", "When in doubt, go figure it out","Its a yes, but Wikipedia is not a reliable source","Ask Leo's bot, I gave him all the answers",]
-    await ctx.send(f"Heres what I think about: {question} \n  {random.choice(responses)}") 
+    query = json.load(open("Arrays/query.json", "r"))["query"]
+    await ctx.send(f"Heres what I think about: {question} \n  {random.choice(query)}") 
 
 @client.command()
 async def dice(ctx):
@@ -153,20 +153,23 @@ async def commands(ctx):
     author = ctx.message.author
     embed1 = discord.Embed(color = discord.Color.dark_blue())
     embed1.set_author(name="Help")
+    embed1.add_field(name="v", value="display bot version", inline=True)
+    embed1.add_field(name="clear", value="Clear some messages", inline=True)
+    embed1.add_field(name="sneaky_clear", value="clear messages like a ninja", inline=True)
+    embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
     embed1.add_field(name='record ', value='Leave a message for Akov', inline=True)
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
-    embed1.add_field(name='note ', value="send yourself a note in dm", inline=True)
-    embed1.add_field(name='pnote ', value="send yourself a private note in dm", inline=True)   
-    embed1.add_field(name="clear", value="clear some messages", inline=True)
+    embed1.add_field(name='note ', value="dm yourself a note", inline=True)
+    embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
+    embed1.add_field(name="incognito_msg", value="msg but anonymous", inline=True)
+    embed1.add_field(name="msg", value="Send a msg through akov", inline=True)   
     embed1.add_field(name="dice", value="Roll the dice", inline=True)
-    embed1.add_field(name="cointoss", value="Toss a coin", inline=True)
-    embed1.add_field(name="rules", value="Follow these rules", inline=True)
-    embed1.add_field(name="help <command>", value="get command template", inline=True)
-    embed1.add_field(name="tip", value="Get some tips", inline=True)   
-    embed1.add_field(name="incognito_msg", value="Send an anonymous private msg through akov", inline=True)
-    embed1.add_field(name="msg", value="Send a msg through akov", inline=True)
+    embed1.add_field(name="cointoss", value="Toss a coin", inline=True)   
+    embed1.add_field(name="meme", value="look at dank memes", inline=True)
+    embed1.add_field(name="tip", value="Get some tips", inline=True)
     await ctx.send(author, embed=embed1)
+    await ctx.send("Type .help command for more info on a command.")
 
 @client.command(pass_context=True)
 async def rules(ctx):
