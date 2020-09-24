@@ -10,6 +10,7 @@ from itertools import cycle
 client = commands.Bot(command_prefix = ".")
 
 Token = json.load(open("secrets.json", "r"))["Token"]
+akov = json.load(open("id.json", "r"))["akov"]
 
 
 activity = json.load(open("Arrays/activity.json", "r"))["activity"]
@@ -29,7 +30,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@tasks.loop(hours=12)
+@tasks.loop(hours=6)
 async def change_status():
     await client.change_presence(activity=discord.Game(next(activity)))
 
@@ -49,14 +50,20 @@ async def on_message(message):
                     f"<@{message.author.id}> Late to the game as always",
                     f"<@{message.author.id}> not today, sorry",
                     ]
-        if random.random() < 0.05:
+        if random.random() < 0.1:
             await message.channel.send(random.choice(comments))  
     elif "among us" in message.content.lower():
         if random.random() < 0.0333:
             await message.channel.send(f"<@{message.author.id}> Kinda sus of you to mention that game")
     elif message.content.endswith("pic"):
         await message.channel.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
-    await client.process_commands(message)
+    elif message.content.startswith(akov):
+        response = [f"<@{message.author.id}> Ya Wassup",
+                    f"<@{message.author.id}> Tech Support here, how can I help you",
+                    f"<@{message.author.id}> I thought you forgot about me :robot: :cry:"]
+        await message.channel.send(random.choice(response))
+    else:
+        await client.process_commands(message)
 
 ###################################
 @client.command()
@@ -79,7 +86,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w39b")
+    await ctx.send("20w39c")
 
 #############################################
 
