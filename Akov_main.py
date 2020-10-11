@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import discord
-import random
-import os
 import json
+from random import choice, random
 from discord.ext import commands, tasks
 from discord.utils import get
 from itertools import cycle
@@ -19,7 +18,7 @@ status = cycle(activity)
 @client.event
 async def on_ready():
     change_status.start
-    await client.change_presence(activity=discord.Game(random.choice(activity)))
+    await client.change_presence(activity=discord.Game(choice(activity)))
     print('We have logged in as {0.user}'.format(client))
 
 @client.event
@@ -38,22 +37,22 @@ async def change_status():
 async def on_message(message):
     if message.author == client.user:
         return
-    elif random.random() < 0.0005:
+    elif random() < 0.0005:
         funfact = [f"<@{message.author.id}> \n **¡Apuesto a que no sabias que yo era parte de la inquisicion espanola!**",
                    f"<@{message.author.id}> Have I ever told you the story of darth plageous the black death?",
                    f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today",
                    f"<@{message.author.id}> **DID YOU KNOW #19742** \n This portion of code was actually yeeted off of Leo's bot "
                    ]
-        await message.channel.send(random.choice(funfact))
+        await message.channel.send(choice(funfact))
     elif message.content.endswith("tonight"):
         comments = [f"<@{message.author.id}> Hey man, go do your home work",
                     f"<@{message.author.id}> Late to the game as always",
                     f"<@{message.author.id}> not today, sorry",
                     ]
-        if random.random() < 0.1:
-            await message.channel.send(random.choice(comments))  
+        if random() < 0.1:
+            await message.channel.send(choice(comments))  
     elif "among us" in message.content.lower():
-        if random.random() < 0.0333:
+        if random() < 0.0333:
             await message.channel.send(f"<@{message.author.id}> Kinda sus of you to mention that game")
     elif message.content.endswith("pic"):
         await message.channel.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
@@ -61,7 +60,7 @@ async def on_message(message):
         response = [f"<@{message.author.id}> Ya Wassup",
                     f"<@{message.author.id}> Tech Support here, how can I help you",
                     f"<@{message.author.id}> I thought you forgot about me :robot: :cry:"]
-        await message.channel.send(random.choice(response))
+        await message.channel.send(choice(response))
     else:
         await client.process_commands(message)
 
@@ -93,17 +92,17 @@ async def v(ctx):
 @client.command()
 async def query(ctx,*, question):
     query = json.load(open("Arrays/query.json", "r"))["query"]
-    await ctx.send(f"Heres what I think about: {question} \n  {random.choice(query)}") 
+    await ctx.send(f"Heres what I think about: {question} \n  {choice(query)}") 
 
 @client.command()
 async def dice(ctx):
     dice=["1", "2", "3", "4", "5", "6"]
-    await ctx.send(f"You got a  {random.choice(dice)}")
+    await ctx.send(f"You got a  {choice(dice)}")
 
 @client.command()
 async def cointoss(ctx):
     coin=["Heads","Tails"]
-    await ctx.send(f"The coin has landed  {random.choice(coin)}")
+    await ctx.send(f"The coin has landed  {choice(coin)}")
 
 
 #########################################
@@ -146,14 +145,14 @@ async def tip(ctx):
     author = ctx.message.author
     tip = json.load(open("Arrays/tip.json", "r"))["tip"]
     embed3 = discord.Embed(color = discord.Color.dark_blue())
-    embed3.add_field(name=(f"Tip #{round(random.random()*1000)}"), value=random.choice(tip), inline=False)
+    embed3.add_field(name=(f"Tip #{round(random()*1000)}"), value=choice(tip), inline=False)
     await ctx.send(author, embed=embed3)
 
 @client.command(pass_context=True)
 async def meme(ctx):
     author = ctx.message.author
     meme = json.load(open("Arrays/meme.json", "r"))["meme"]
-    await ctx.send(random.choice(meme))
+    await ctx.send(choice(meme))
 
 @client.command(pass_context=True)
 async def commands(ctx):
