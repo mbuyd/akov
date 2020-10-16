@@ -17,6 +17,7 @@ internshipchan = json.load(open("dictionary.json", "r"))["internshipchan"]
 botchan = json.load(open("dictionary.json", "r"))["botchan"]
 internreply = json.load(open("dictionary.json", "r"))["internreply"]
 test = json.load(open("dictionary.json", "r"))["test"]
+#secrettest = py.load(open("secret.py","r"))
 
 
 activity = json.load(open("Arrays/activity.json", "r"))["activity"]
@@ -76,6 +77,22 @@ async def on_message(message):
                 pass
             pass
         pass
+    elif "internship" in message.content.lower():
+        if message.author.id == Gid:
+            if message.channel.id == internshipchan:
+                if random() < 0.5:
+                    await message.channel.send (internreply)
+                pass
+            pass
+        pass
+    elif "event" in message.content.lower():
+        if message.author.id == Gid:
+            if message.channel.id == internshipchan:
+                if random() < 0.5:
+                    await message.channel.send (internreply)
+                pass
+            pass
+        pass
     #elif "test" in message.content.lower():
         #await message.channel.send(test)
     else:
@@ -104,7 +121,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w42a")
+    await ctx.send("20w42b")
 
 #############################################
 
