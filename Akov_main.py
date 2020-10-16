@@ -91,19 +91,18 @@ async def on_message(message):
     #elif "test" in message.content.lower():
         #await message.channel.send(test)
     else:
-        pass
-        #client.process_commands(message)
+        await client.process_commands(message)
 
 
 ###################################
 @client.command()
 async def clear(ctx, amount=5):
-    await ctx.channel.purge(limit=amount)
+    await ctx.channel.purge(limit=amount+1)
     await ctx.send(f"{ctx.author} cleared {amount} messages \n      **LIKE A BOSS**")
 
 @client.command()
 async def sclear(ctx, amount=5):
-    await ctx.channel.purge(limit=amount)
+    await ctx.channel.purge(limit=amount+1)
 
     
 @client.command()
@@ -116,7 +115,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w42c")
+    await ctx.send("RC_1 (20w42d)")
 
 #############################################
 
