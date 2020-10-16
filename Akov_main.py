@@ -9,7 +9,14 @@ from itertools import cycle
 client = commands.Bot(command_prefix = ".")
 
 Token = json.load(open("secrets.json", "r"))["Token"]
-akov = json.load(open("id.json", "r"))["akov"]
+akov = json.load(open("dictionary.json", "r"))["akov"]
+Max = json.load(open("dictionary.json", "r"))["Max"]
+Gid = json.load(open("dictionary.json", "r"))["Gid"]
+test1 = json.load(open("dictionary.json", "r"))["test1"]
+internshipchan = json.load(open("dictionary.json", "r"))["internshipchan"]
+botchan = json.load(open("dictionary.json", "r"))["botchan"]
+internreply = json.load(open("dictionary.json", "r"))["internreply"]
+test = json.load(open("dictionary.json", "r"))["test"]
 
 
 activity = json.load(open("Arrays/activity.json", "r"))["activity"]
@@ -61,8 +68,20 @@ async def on_message(message):
                     f"<@{message.author.id}> Tech Support here, how can I help you",
                     f"<@{message.author.id}> I thought you forgot about me :robot: :cry:"]
         await message.channel.send(choice(response))
+    elif "apply" in message.content.lower():
+        if message.author.id == Gid:
+            if message.channel.id == internshipchan:
+                if random() < 0.5:
+                    await message.channel.send (internreply)
+                pass
+            pass
+        pass
+    #elif "test" in message.content.lower():
+        #await message.channel.send(test)
     else:
-        await client.process_commands(message)
+        pass
+        #client.process_commands(message)
+
 
 ###################################
 @client.command()
@@ -85,7 +104,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w39c")
+    await ctx.send("20w42a")
 
 #############################################
 
