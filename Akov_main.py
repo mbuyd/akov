@@ -17,16 +17,11 @@ internshipchan = json.load(open("dictionary.json", "r"))["internshipchan"]
 botchan = json.load(open("dictionary.json", "r"))["botchan"]
 internreply = json.load(open("dictionary.json", "r"))["internreply"]
 test = json.load(open("dictionary.json", "r"))["test"]
-#secrettest = py.load(open("secret.py","r"))
-
-
-activity = json.load(open("Arrays/activity.json", "r"))["activity"]
-status = cycle(activity)
+status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
 
 @client.event
 async def on_ready():
-    change_status.start
-    await client.change_presence(activity=discord.Game(choice(activity)))
+    change_status.start()
     print('We have logged in as {0.user}'.format(client))
 
 @client.event
@@ -37,9 +32,9 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@tasks.loop(seconds=10)
+@tasks.loop(hours=8)
 async def change_status():
-    await client.change_presence(activity=discord.Game(next(activity)))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(next(status)))
 
 @client.event
 async def on_message(message):
@@ -107,7 +102,7 @@ async def clear(ctx, amount=5):
     await ctx.send(f"{ctx.author} cleared {amount} messages \n      **LIKE A BOSS**")
 
 @client.command()
-async def sneaky_clear(ctx, amount=5):
+async def sclear(ctx, amount=5):
     await ctx.channel.purge(limit=amount)
 
     
@@ -121,7 +116,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("20w42b")
+    await ctx.send("20w42c")
 
 #############################################
 
@@ -197,7 +192,7 @@ async def commands(ctx):
     embed1.set_author(name="Help")
     embed1.add_field(name="v", value="display bot version", inline=True)
     embed1.add_field(name="clear", value="Clear some messages", inline=True)
-    embed1.add_field(name="sneaky_clear", value="clear messages like a ninja", inline=True)
+    embed1.add_field(name="sclear", value="clear messages like a ninja", inline=True)
     embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
     embed1.add_field(name='record ', value='Leave a message for Akov', inline=True)
