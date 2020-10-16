@@ -6,7 +6,7 @@ Discord Bot for DUDES of 708 discord server
 ```
 - Ammeliorates loneliness and depression by responding to questions and entertaining discord server members
 - Answers complicated philosophical questions
-- Clear clutter in chat
+- Clears clutter in chat
 - Breaks the server/dm barrier
 - Provides helpfull life tips
 ```
