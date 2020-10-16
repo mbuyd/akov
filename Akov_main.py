@@ -29,7 +29,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@tasks.loop(hours=6)
+@tasks.loop(seconds=10)
 async def change_status():
     await client.change_presence(activity=discord.Game(next(activity)))
 
