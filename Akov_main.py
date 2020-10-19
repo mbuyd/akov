@@ -9,27 +9,35 @@ from itertools import cycle
 client = commands.Bot(command_prefix = ".")
 
 Token = json.load(open("secrets.json", "r"))["Token"]
-akov = json.load(open("dictionary.json", "r"))["akov"]
-Max = json.load(open("dictionary.json", "r"))["Max"]
-Gid = json.load(open("dictionary.json", "r"))["Gid"]
-Sha = json.load(open("dictionary.json", "r"))["Sha"]
-Aed = json.load(open("dictionary.json", "r"))["Aed"]
-Bri = json.load(open("dictionary.json", "r"))["Bri"]
-Leo = json.load(open("dictionary.json", "r"))["Leo"]
-Jer = json.load(open("dictionary.json", "r"))["Jer"]
-Kev = json.load(open("dictionary.json", "r"))["Kev"]
-Cal = json.load(open("dictionary.json", "r"))["Cal"]
-Amy = json.load(open("dictionary.json", "r"))["Amy"]
-Ako = json.load(open("dictionary.json", "r"))["Ako"]
-Ske = json.load(open("dictionary.json", "r"))["Ske"]
-test1 = json.load(open("dictionary.json", "r"))["test1"]
-internshipchan = json.load(open("dictionary.json", "r"))["internshipchan"]
-botchan = json.load(open("dictionary.json", "r"))["botchan"]
-foodchan = json.load(open("dictionary.json", "r"))["foodchan"]
-internreply = json.load(open("dictionary.json", "r"))["internreply"]
-shawn_reply = json.load(open("dictionary.json", "r"))["shawn_reply"]
-bacon = json.load(open("dictionary.json", "r"))["bacon"]
-test = json.load(open("dictionary.json", "r"))["test"]
+dic = json.load(open("dictionary.json"))
+akov = dic["akov"]
+Gid = dic["Gid"]
+Sha = dic["Sha"]
+Max = dic["Max"]
+Aed = dic["Aed"]
+Bri = dic["Bri"]
+Leo = dic["Leo"]
+Jer = dic["Jer"]
+Kev = dic["Kev"]
+Amy = dic["Amy"]
+Cal = dic["Cal"]
+Ako = dic["Ako"]
+Ske = dic["Ske"]
+test1 = dic["test1"]
+chtest1 = client.get_channel(test1)
+internshipchan = dic["internshipchan"]
+chintern = client.get_channel(internshipchan)
+botchan = dic["botchan"]
+chbot = client.get_channel(botchan)
+updatechan = dic["updatechan"]
+chupdate = client.get_channel(updatechan)
+foodchan = dic["foodchan"]
+chfood = client.get_channel(foodchan)
+internreply = dic["internreply"]
+shawn_reply = dic["shawn_reply"]
+bacon = dic["bacon"]
+farewell = dic["farewell"]
+test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
 
 
@@ -44,6 +52,7 @@ async def on_member_join(member):
     
 @client.event
 async def on_member_remove(member):
+    await chupdate.send (f'{member} {farewell}')
     print(f'{member} has left the server.')
 
 @tasks.loop(hours=8)
@@ -118,6 +127,11 @@ async def on_message(message):
         if random() < 0.5:
             await message.channel.send (choice(shawn_response))
         pass
+    elif "test" in message.content.lower():
+        if message.author.id == Max:
+            chtest1 = client.get_channel(test1)
+            await chtest1.send ("Test completed")
+        pass
     #elif "test" in message.content.lower():
         #await message.channel.send(test)
     else:
@@ -145,7 +159,7 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("RC_1 (20w42d)")
+    await ctx.send("RC_2 (20w43a)")
 
 #############################################
 
