@@ -12,12 +12,26 @@ Token = json.load(open("secrets.json", "r"))["Token"]
 akov = json.load(open("dictionary.json", "r"))["akov"]
 Max = json.load(open("dictionary.json", "r"))["Max"]
 Gid = json.load(open("dictionary.json", "r"))["Gid"]
+Sha = json.load(open("dictionary.json", "r"))["Sha"]
+Aed = json.load(open("dictionary.json", "r"))["Aed"]
+Bri = json.load(open("dictionary.json", "r"))["Bri"]
+Leo = json.load(open("dictionary.json", "r"))["Leo"]
+Jer = json.load(open("dictionary.json", "r"))["Jer"]
+Kev = json.load(open("dictionary.json", "r"))["Kev"]
+Cal = json.load(open("dictionary.json", "r"))["Cal"]
+Amy = json.load(open("dictionary.json", "r"))["Amy"]
+Ako = json.load(open("dictionary.json", "r"))["Ako"]
+Ske = json.load(open("dictionary.json", "r"))["Ske"]
 test1 = json.load(open("dictionary.json", "r"))["test1"]
 internshipchan = json.load(open("dictionary.json", "r"))["internshipchan"]
 botchan = json.load(open("dictionary.json", "r"))["botchan"]
+foodchan = json.load(open("dictionary.json", "r"))["foodchan"]
 internreply = json.load(open("dictionary.json", "r"))["internreply"]
+shawn_reply = json.load(open("dictionary.json", "r"))["shawn_reply"]
+bacon = json.load(open("dictionary.json", "r"))["bacon"]
 test = json.load(open("dictionary.json", "r"))["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
+
 
 @client.event
 async def on_ready():
@@ -76,7 +90,15 @@ async def on_message(message):
         if message.author.id == Gid:
             if message.channel.id == internshipchan:
                 if random() < 0.5:
-                    await message.channel.send (internreply)
+                    await message.channel.send (choice(internreply))
+                pass
+            pass
+        pass
+    elif "opportunity" in message.content.lower():
+        if message.author.id == Gid:
+            if message.channel.id == internshipchan:
+                if random() < 0.5:
+                    await message.channel.send (choice(internreply))
                 pass
             pass
         pass
@@ -84,9 +106,17 @@ async def on_message(message):
         if message.author.id == Gid:
             if message.channel.id == internshipchan:
                 if random() < 0.5:
-                    await message.channel.send (internreply)
+                    await message.channel.send (choice(internreply))
                 pass
             pass
+        pass
+    elif "bacon" in message.content.lower():
+        if message.channel.id == foodchan:
+            await message.channel.send (choice(bacon))
+        pass
+    elif message.author.id == Sha:
+        if random() < 0.5:
+            await message.channel.send (choice(shawn_response))
         pass
     #elif "test" in message.content.lower():
         #await message.channel.send(test)
@@ -157,13 +187,13 @@ async def pnote(ctx,*, message):
     await ctx.channel.purge(limit=1)
     
 @client.command()
-async def incognito_msg(ctx, member: discord.Member, *, content):
+async def pm(ctx, member: discord.Member, *, content):
     await ctx.channel.purge(limit=1)
     channel = await member.create_dm() 
     await channel.send(content)
 
 @client.command()
-async def msg(ctx, member: discord.Member, *, content):
+async def dm(ctx, member: discord.Member, *, content):
     channel = await member.create_dm() 
     await channel.send(content)
     await ctx.send("message sent")
@@ -185,25 +215,35 @@ async def meme(ctx):
     await ctx.send(choice(meme))
 
 @client.command(pass_context=True)
+async def quote(ctx):
+    author = ctx.message.author
+    quote = json.load(open("dictionary.json", "r"))["quote"]
+    embed4 = discord.Embed(color = discord.Color.dark_blue())
+    embed4.add_field(name=(f"Quote #{round(random()*100)}"), value=choice(quote), inline=False)
+    await ctx.send(author, embed=embed4)
+
+@client.command(pass_context=True)
 async def commands(ctx):
     author = ctx.message.author
     embed1 = discord.Embed(color = discord.Color.dark_blue())
     embed1.set_author(name="Help")
-    embed1.add_field(name="v", value="display bot version", inline=True)
+    embed1.add_field(name="v", value="Display bot version", inline=True)
     embed1.add_field(name="clear", value="Clear some messages", inline=True)
-    embed1.add_field(name="sclear", value="clear messages like a ninja", inline=True)
+    embed1.add_field(name="sclear", value="Clear messages like a ninja", inline=True)
     embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
     embed1.add_field(name='record ', value='Leave a message for Akov', inline=True)
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
     embed1.add_field(name='note ', value="dm yourself a note", inline=True)
     embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
-    embed1.add_field(name="incognito_msg", value="msg but anonymous", inline=True)
-    embed1.add_field(name="msg", value="Send a msg through akov", inline=True)   
+    embed1.add_field(name="pm", value="Send a private direct msg", inline=True)
+    embed1.add_field(name="dm", value="Send a direct msg", inline=True)   
     embed1.add_field(name="dice", value="Roll the dice", inline=True)
     embed1.add_field(name="cointoss", value="Toss a coin", inline=True)   
     embed1.add_field(name="meme", value="look at dank memes", inline=True)
     embed1.add_field(name="tip", value="Get some tips", inline=True)
+    embed1.add_field(name="quote", value="Hear a famous quote", inline=True)
+    
     await ctx.send(author, embed=embed1)
     await ctx.send("Type .help command for more info on a command.")
 
