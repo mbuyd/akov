@@ -19,6 +19,7 @@ Bri = dic["Bri"]
 Leo = dic["Leo"]
 Jer = dic["Jer"]
 Kev = dic["Kev"]
+Gis = dic["Gis"]
 Amy = dic["Amy"]
 Cal = dic["Cal"]
 Ako = dic["Ako"]
@@ -37,9 +38,13 @@ internreply = dic["internreply"]
 shawn_reply = dic["shawn_reply"]
 bacon = dic["bacon"]
 farewell = dic["farewell"]
+interntrig = "internship" or "intern" or "opportunity" or "event" or "apply" or "job" or "program" 
+waittrig = "wait, its all" or "wait its all" or "wait, it's all" or "wait it's all"
+t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
 
+#Events#
 
 @client.event
 async def on_ready():
@@ -63,7 +68,7 @@ async def change_status():
 async def on_message(message):
     if message.author == client.user:
         return
-    elif random() < 0.0005:
+    elif random() < 0.005:
         funfact = [f"<@{message.author.id}> \n **¡Apuesto a que no sabias que yo era parte de la inquisicion espanola!**",
                    f"<@{message.author.id}> Have I ever told you the story of darth plageous the black death?",
                    f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today",
@@ -75,70 +80,76 @@ async def on_message(message):
                     f"<@{message.author.id}> Late to the game as always",
                     f"<@{message.author.id}> not today, sorry",
                     ]
-        if random() < 0.1:
+        if random() < 0.125:
             await message.channel.send(choice(comments))  
     elif "among us" in message.content.lower():
-        if random() < 0.0333:
+        if random() < 0.03:
             await message.channel.send(f"<@{message.author.id}> Kinda sus of you to mention that game")
     elif message.content.endswith("pic"):
         await message.channel.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
-    elif message.content.startswith(akov):
+    elif akov in message.content.lower() or "akov" in message.content.lower():
         response = [f"<@{message.author.id}> Ya Wassup",
                     f"<@{message.author.id}> Tech Support here, how can I help you",
                     f"<@{message.author.id}> I thought you forgot about me :robot: :cry:"]
         await message.channel.send(choice(response))
-    elif "apply" in message.content.lower():
-        if message.author.id == Gid:
+        await client.process_commands(message)
+    elif "internship" in message.content.lower() or "intern" in message.content.lower() or "opportunity" in message.content.lower() or "event" in message.content.lower() or "apply" in message.content.lower() or "job" in message.content.lower() or "program" in message.content.lower():
+        if message.author.id == Gid or message.author.id == Gis:
             if message.channel.id == internshipchan:
-                if random() < 0.5:
+                if random() < 0.8:
                     await message.channel.send (internreply)
+                    await client.process_commands(message)
                 pass
             pass
         pass
-    elif "internship" in message.content.lower():
-        if message.author.id == Gid:
-            if message.channel.id == internshipchan:
-                if random() < 0.5:
-                    await message.channel.send (choice(internreply))
-                pass
-            pass
-        pass
-    elif "opportunity" in message.content.lower():
-        if message.author.id == Gid:
-            if message.channel.id == internshipchan:
-                if random() < 0.5:
-                    await message.channel.send (choice(internreply))
-                pass
-            pass
-        pass
-    elif "event" in message.content.lower():
-        if message.author.id == Gid:
-            if message.channel.id == internshipchan:
-                if random() < 0.5:
-                    await message.channel.send (choice(internreply))
-                pass
+    elif "program" in message.content.lower():
+        if message.author.id == Cal:
+            if random() < 0.5:
+                await message.channel.send ()
+                await client.process_commands(message)
             pass
         pass
     elif "bacon" in message.content.lower():
         if message.channel.id == foodchan:
             await message.channel.send (choice(bacon))
+            await client.process_commands(message)
         pass
+    elif "wait its all" in message.content.lower() or "wait, its all" in message.content.lower() or "wait, it's all" in message.content.lower() or "wait its all" in message.content.lower():
+        if random() < 0.7:
+            await message.channel.send ("always has been")
+            emoji = discord.utils.get(message.guild.emojis, name='monkaGun')
+            if emoji:
+                await message.add_reaction(emoji)
+                pass
+            await client.process_commands(message)
+        elif random() > 0.9:
+            await message.channel.send ("Never has been")
+            emoji = discord.utils.get(message.guild.emojis, name='monkaStab')
+            if emoji:
+                await message.add_reaction(emoji)
+                pass
+            await client.process_commands(message)
+    elif random() < 0.01:
+        emoji = discord.utils.get(message.guild.emojis, name='leoFoot')
+        if emoji:
+            await message.add_reaction(emoji)
+            await client.process_commands(message)
+            pass
     elif message.author.id == Sha:
         if random() < 0.5:
             await message.channel.send (choice(shawn_response))
-        pass
-    elif "test" in message.content.lower():
-        if message.author.id == Max:
-            chtest1 = client.get_channel(test1)
-            await chtest1.send ("Test completed")
+            await client.process_commands(message)
         pass
     #elif "test" in message.content.lower():
-        #await message.channel.send(test)
+        #if message.author.id == Max:
+            #chtest1 = client.get_channel(test1)
+            #await chtest1.send ("Test completed")
+        #pass
     else:
         await client.process_commands(message)
 
+#Commands#
 
-###################################
 @client.command()
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
@@ -148,7 +159,6 @@ async def clear(ctx, amount=5):
 async def sclear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
 
-    
 @client.command()
 async def bing(ctx):
     await ctx.send(f"Bong! {round(client.latency *1000)} ms" )
@@ -159,9 +169,9 @@ async def ping(ctx):
     
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("RC_2 (20w43a)")
+    await ctx.send("1.0.0")
 
-#############################################
+#Random Commands#
 
 @client.command()
 async def query(ctx,*, question):
@@ -170,16 +180,15 @@ async def query(ctx,*, question):
 
 @client.command()
 async def dice(ctx):
-    dice=["1", "2", "3", "4", "5", "6"]
-    await ctx.send(f"You got a  {choice(dice)}")
+    dice=["**1**", "**2**", "**3**", "**4**", "**5**", "**6**"]
+    await ctx.send(f"You got a \n {choice(dice)}")
 
 @client.command()
 async def cointoss(ctx):
-    coin=["Heads","Tails"]
-    await ctx.send(f"The coin has landed  {choice(coin)}")
+    coin=["**Heads**","**Tails**"]
+    await ctx.send(f"The coin has landed \n {choice(coin)}")
 
-
-#########################################
+#Messaging Commands#
 
 @client.command()
 async def record(ctx):
@@ -212,8 +221,8 @@ async def dm(ctx, member: discord.Member, *, content):
     await channel.send(content)
     await ctx.send("message sent")
 
+#Embeds and Arrays#
 
-#############################
 @client.command(pass_context=True)
 async def tip(ctx):
     author = ctx.message.author
@@ -231,7 +240,7 @@ async def meme(ctx):
 @client.command(pass_context=True)
 async def quote(ctx):
     author = ctx.message.author
-    quote = json.load(open("dictionary.json", "r"))["quote"]
+    quote = dic["quote"]
     embed4 = discord.Embed(color = discord.Color.dark_blue())
     embed4.add_field(name=(f"Quote #{round(random()*100)}"), value=choice(quote), inline=False)
     await ctx.send(author, embed=embed4)
@@ -277,3 +286,4 @@ async def rules(ctx):
 
     
 client.run(Token)
+#https://discordpy.readthedocs.io/en/latest/faq.html
