@@ -5,6 +5,7 @@ from random import choice, random
 from discord.ext import commands, tasks
 from discord.utils import get
 from itertools import cycle
+import asyncio
 
 client = commands.Bot(command_prefix = ".")
 
@@ -24,16 +25,15 @@ Amy = dic["Amy"]
 Cal = dic["Cal"]
 Ako = dic["Ako"]
 Ske = dic["Ske"]
+tg1 = dic["tg1"]
+tg2 = dic["tg2"]
+ci = dic["ci"]
 test1 = dic["test1"]
 chtest1 = client.get_channel(test1)
 internshipchan = dic["internshipchan"]
-chintern = client.get_channel(internshipchan)
 botchan = dic["botchan"]
-chbot = client.get_channel(botchan)
 updatechan = dic["updatechan"]
-chupdate = client.get_channel(updatechan)
 foodchan = dic["foodchan"]
-chfood = client.get_channel(foodchan)
 internreply = dic["internreply"]
 shawn_reply = dic["shawn_reply"]
 bacon = dic["bacon"]
@@ -54,11 +54,18 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     print(f'{member} has joined the server.')
+    channel = await member.create_dm() 
+    await channel.send("Welcome to the 708 server \n use the prefixes (!help, ~help, .commands) to trigger some of our bots")
+
     
 @client.event
 async def on_member_remove(member):
-    await chupdate.send (f'{member} {farewell}')
-    print(f'{member} has left the server.')
+    chupdate = client.get_channel(updatechan)
+    await chupdate.send(f'{member} {choice(farewell)}')
+    print(f'{member} has left the server.')    
+    channel = await member.create_dm() 
+    await channel.send("You are such a Bruh")
+
 
 @tasks.loop(hours=8)
 async def change_status():
@@ -97,21 +104,14 @@ async def on_message(message):
         if message.author.id == Gid or message.author.id == Gis:
             if message.channel.id == internshipchan:
                 if random() < 0.8:
-                    await message.channel.send (internreply)
+                    await message.channel.send (choice(internreply))
                     await client.process_commands(message)
                 pass
             pass
         pass
-    elif "program" in message.content.lower():
-        if message.author.id == Cal:
-            if random() < 0.5:
-                await message.channel.send ()
-                await client.process_commands(message)
-            pass
-        pass
     elif "bacon" in message.content.lower():
         if message.channel.id == foodchan:
-            await message.channel.send (choice(bacon))
+            await message.channel.send(choice(bacon))
             await client.process_commands(message)
         pass
     elif "wait its all" in message.content.lower() or "wait, its all" in message.content.lower() or "wait, it's all" in message.content.lower() or "wait its all" in message.content.lower():
@@ -129,6 +129,24 @@ async def on_message(message):
                 await message.add_reaction(emoji)
                 pass
             await client.process_commands(message)
+
+###Dad Bot response
+    #elif "im" in message.content.lower() or "I am" in message.content.lower():
+        #if random() < 0.7:
+            #await message.channel.send ("always has been")
+            #emoji = discord.utils.get(message.guild.emojis, name='monkaGun')
+            #if emoji:
+                #await message.add_reaction(emoji)
+                #pass
+            #await client.process_commands(message)
+        #elif random() > 0.9:
+            #await message.channel.send ("Never has been")
+            #emoji = discord.utils.get(message.guild.emojis, name='monkaStab')
+            #if emoji:
+                #await message.add_reaction(emoji)
+                #pass
+            #await client.process_commands(message)
+###
     elif random() < 0.01:
         emoji = discord.utils.get(message.guild.emojis, name='leoFoot')
         if emoji:
@@ -150,26 +168,42 @@ async def on_message(message):
 
 #Commands#
 
-@client.command()
+@client.command(aliases=["c"])
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
     await ctx.send(f"{ctx.author} cleared {amount} messages \n      **LIKE A BOSS**")
 
-@client.command()
-async def sclear(ctx, amount=5):
+@client.command(aliases=["pc"])
+async def pclear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
 
-@client.command()
+@client.command(aliases=["b"])
 async def bing(ctx):
     await ctx.send(f"Bong! {round(client.latency *1000)} ms" )
     
 @client.command()
 async def ping(ctx):
-    await ctx.send(f"Yikes, look like your Pong is overdue \n {round(client.latency *69420)} ms \n \n \n try *Bonging* next time instead")
-    
+    await asyncio.sleep(4)
+    await ctx.send(ci)
+    await ctx.send(f"Yikes, look like your Pong is overdue \n {round(client.latency *69420)} ms \n \n \n try *Binging* next time instead")
+    StopAsyncIteration
+
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.0")
+    await ctx.send("1.0.1")
+
+@client.command(pass_context=True, aliases=["s"])
+async def say(ctx,* , message):
+    await ctx.channel.purge(limit=1)
+    await ctx.send(message)
+
+@client.command(pass_context=True)
+async def ghu(ctx):
+            await ctx.channel.purge(limit=1)
+            await ctx.send(tg1) 
+            await asyncio.sleep(10)
+            await ctx.send(tg2)
+            StopAsyncIteration
 
 #Random Commands#
 
@@ -178,32 +212,25 @@ async def query(ctx,*, question):
     query = json.load(open("Arrays/query.json", "r"))["query"]
     await ctx.send(f"Heres what I think about: {question} \n  {choice(query)}") 
 
-@client.command()
+@client.command(aliases=["d"])
 async def dice(ctx):
     dice=["**1**", "**2**", "**3**", "**4**", "**5**", "**6**"]
     await ctx.send(f"You got a \n {choice(dice)}")
 
-@client.command()
+@client.command(aliases=["ct"])
 async def cointoss(ctx):
     coin=["**Heads**","**Tails**"]
     await ctx.send(f"The coin has landed \n {choice(coin)}")
 
 #Messaging Commands#
 
-@client.command()
-async def record(ctx):
-    print(ctx.channel)
-    print(ctx.author)
-    print(ctx.message.content)
-    await ctx.send("message recorded")
-
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["n"])
 async def note(ctx,*, message):
     author = ctx.message.author
     await author.send(f"{message}")
-    await ctx.send ("message sent to DMs")
+    await ctx.send ("message logged in DMs")
     
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["pn"])
 async def pnote(ctx,*, message):
     author = ctx.message.author
     await author.send(f"{message}")
@@ -216,14 +243,14 @@ async def pm(ctx, member: discord.Member, *, content):
     await channel.send(content)
 
 @client.command()
-async def dm(ctx, member: discord.Member, *, content):
+async def m(ctx, member: discord.Member, *, content):
     channel = await member.create_dm() 
     await channel.send(content)
-    await ctx.send("message sent")
+    await ctx.send("message sent to DMs")
 
 #Embeds and Arrays#
 
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["t"])
 async def tip(ctx):
     author = ctx.message.author
     tip = json.load(open("Arrays/tip.json", "r"))["tip"]
@@ -231,13 +258,13 @@ async def tip(ctx):
     embed3.add_field(name=(f"Tip #{round(random()*1000)}"), value=choice(tip), inline=False)
     await ctx.send(author, embed=embed3)
 
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["m"])
 async def meme(ctx):
     author = ctx.message.author
     meme = json.load(open("Arrays/meme.json", "r"))["meme"]
     await ctx.send(choice(meme))
 
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["q"])
 async def quote(ctx):
     author = ctx.message.author
     quote = dic["quote"]
@@ -252,25 +279,24 @@ async def commands(ctx):
     embed1.set_author(name="Help")
     embed1.add_field(name="v", value="Display bot version", inline=True)
     embed1.add_field(name="clear", value="Clear some messages", inline=True)
-    embed1.add_field(name="sclear", value="Clear messages like a ninja", inline=True)
+    #embed1.add_field(name="pclear", value="Clear messages like a ninja", inline=True)
     embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
-    embed1.add_field(name='record ', value='Leave a message for Akov', inline=True)
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
     embed1.add_field(name='note ', value="dm yourself a note", inline=True)
-    embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
-    embed1.add_field(name="pm", value="Send a private direct msg", inline=True)
+    #embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
+    #embed1.add_field(name="pdm", value="Send a private direct msg", inline=True)
     embed1.add_field(name="dm", value="Send a direct msg", inline=True)   
     embed1.add_field(name="dice", value="Roll the dice", inline=True)
     embed1.add_field(name="cointoss", value="Toss a coin", inline=True)   
     embed1.add_field(name="meme", value="look at dank memes", inline=True)
     embed1.add_field(name="tip", value="Get some tips", inline=True)
-    embed1.add_field(name="quote", value="Hear a famous quote", inline=True)
+    embed1.add_field(name="quote", value="Hear an infamous quote", inline=True)
     
     await ctx.send(author, embed=embed1)
     await ctx.send("Type .help command for more info on a command.")
 
-@client.command(pass_context=True)
+@client.command(pass_context=True, aliases=["r"])
 async def rules(ctx):
     author = ctx.message.author
     embed2 = discord.Embed(color = discord.Color.dark_blue())
