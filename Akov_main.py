@@ -258,7 +258,7 @@ async def tip(ctx):
     embed3.add_field(name=(f"Tip #{round(random()*1000)}"), value=choice(tip), inline=False)
     await ctx.send(author, embed=embed3)
 
-@client.command(pass_context=True, aliases=["m"])
+@client.command(pass_context=True)
 async def meme(ctx):
     author = ctx.message.author
     meme = json.load(open("Arrays/meme.json", "r"))["meme"]
@@ -285,8 +285,8 @@ async def commands(ctx):
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
     embed1.add_field(name='note ', value="dm yourself a note", inline=True)
     #embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
-    #embed1.add_field(name="pdm", value="Send a private direct msg", inline=True)
-    embed1.add_field(name="dm", value="Send a direct msg", inline=True)   
+    #embed1.add_field(name="pm", value="Send a private direct msg", inline=True)
+    embed1.add_field(name="m", value="Send a direct msg", inline=True)   
     embed1.add_field(name="dice", value="Roll the dice", inline=True)
     embed1.add_field(name="cointoss", value="Toss a coin", inline=True)   
     embed1.add_field(name="meme", value="look at dank memes", inline=True)
