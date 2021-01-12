@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-import discord
-import json
-from random import choice, random
-from discord.ext import commands, tasks
-from discord.utils import get
-from itertools import cycle
 import asyncio
+import json
+from itertools import cycle
+from random import choice, random
+import discord
+from discord.ext import commands, tasks
+from discord.utils import find, get
 
 client = commands.Bot(command_prefix = ".")
+
 
 Token = json.load(open("secrets.json", "r"))["Token"]
 dic = json.load(open("dictionary.json"))
@@ -40,11 +41,13 @@ bacon = dic["bacon"]
 farewell = dic["farewell"]
 interntrig = "internship" or "intern" or "opportunity" or "event" or "apply" or "job" or "program" 
 waittrig = "wait, its all" or "wait its all" or "wait, it's all" or "wait it's all"
+Say = dic["Say"]
+prostate = dic["Prostate"]
 t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
 
-#Events#
+#Events####################################################################################################################
 
 @client.event
 async def on_ready():
@@ -69,6 +72,7 @@ async def on_member_remove(member):
 
 @tasks.loop(hours=8)
 async def change_status():
+    #await client.change_presence(status=discord.Status.online, activity=discord.Activity(name="Pregnancy test", type=5))
     await client.change_presence(status=discord.Status.online, activity=discord.Game(next(status)))
 
 @client.event
@@ -78,9 +82,8 @@ async def on_message(message):
     elif random() < 0.005:
         funfact = [f"<@{message.author.id}> \n **¡Apuesto a que no sabias que yo era parte de la inquisicion espanola!**",
                    f"<@{message.author.id}> Have I ever told you the story of darth plageous the black death?",
-                   f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today",
-                   f"<@{message.author.id}> **DID YOU KNOW #19742** \n This portion of code was actually yeeted off of Leo's bot "
-                   ]
+                   f"<@{message.author.id}> Pssssst, would you like to know Leo's phone number \n Im willing to give it to you for just $4 today"
+                                      ]
         await message.channel.send(choice(funfact))
     elif message.content.endswith("tonight"):
         comments = [f"<@{message.author.id}> Hey man, go do your home work",
@@ -166,16 +169,24 @@ async def on_message(message):
     else:
         await client.process_commands(message)
 
-#Commands#
+#Commands################################################################################################################
 
-@client.command(aliases=["c"])
+@client.command()
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
     await ctx.send(f"{ctx.author} cleared {amount} messages \n      **LIKE A BOSS**")
 
-@client.command(aliases=["pc"])
-async def pclear(ctx, amount=5):
-    await ctx.channel.purge(limit=amount+1)
+@client.command()
+async def c(ctx, amount=5):
+    author = ctx.message.author.id
+    if author != Max:
+        await ctx.send(choice(Say))
+        pass
+    elif author == Max:
+        await ctx.channel.purge(limit=amount+1)
+    else:
+        await client.process_commands(message)
+
 
 @client.command(aliases=["b"])
 async def bing(ctx):
@@ -190,12 +201,32 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.1")
+    await ctx.send("1.0.2")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
-    await ctx.channel.purge(limit=1)
-    await ctx.send(message)
+    author = ctx.message.author.id
+    if author != Max:
+        await ctx.send(choice(Say))
+        pass
+    elif author == Max:
+        await ctx.channel.purge(limit=1)
+        await ctx.send(message)
+    else:
+        await client.process_commands(message)
+
+@client.command(pass_context=True)
+async def tts(ctx,* , message):
+    author = ctx.message.author.id
+    if author != Max:
+        await ctx.send(choice(Say))
+        pass
+    elif author == Max:
+        await ctx.channel.purge(limit=1)
+        await ctx.send(message, tts=True)
+    else:
+        await client.process_commands(message)
+
 
 @client.command(pass_context=True)
 async def ghu(ctx):
@@ -205,7 +236,52 @@ async def ghu(ctx):
             await ctx.send(tg2)
             StopAsyncIteration
 
-#Random Commands#
+@client.command(pass_context=True)
+async def test(ctx, member: discord.Member):
+            await ctx.send (member)
+            await ctx.send(member.id) 
+
+@client.command(pass_context=True)
+async def check_prostate(ctx, member: discord.Member):
+            message = await ctx.send(f"Probing {member}'s prostate.")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate..")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate...")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate.")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate..")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate...")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate.")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate..")
+            await asyncio.sleep(0.3)
+            await message.edit(content=f"Probing {member}'s prostate...")
+            await asyncio.sleep(0.3)
+            if member.id == Max:
+                await message.edit(content=f" {member} has **passed** their prostate exam with flying colors")
+            elif member.id == Ako:
+                await message.edit(content=f" {member} does not have a prostate")
+            elif member.id == Amy:
+                await message.edit(content=f" {member} does not have a prostate")
+            elif member.id == Cal:
+                await message.edit(content=f" {member} does not have a prostate")
+            elif member.id == Ske:
+                await message.edit(content=f" {member} does not have a prostate")
+            else:
+                await message.edit(content=f" {member}  {choice(prostate)}")
+            StopAsyncIteration
+
+#@client.command()
+#async def test(ctx):
+#  message = await ctx.send("hello")
+#  await asyncio.sleep(1)
+#  await message.edit(content="newcontent")
+
+#Random Commands####################################################################################################
 
 @client.command()
 async def query(ctx,*, question):
@@ -222,8 +298,8 @@ async def cointoss(ctx):
     coin=["**Heads**","**Tails**"]
     await ctx.send(f"The coin has landed \n {choice(coin)}")
 
-#Messaging Commands#
-
+#class Messaging:
+#Messaging Commands#######################################################################################################
 @client.command(pass_context=True, aliases=["n"])
 async def note(ctx,*, message):
     author = ctx.message.author
@@ -248,7 +324,8 @@ async def m(ctx, member: discord.Member, *, content):
     await channel.send(content)
     await ctx.send("message sent to DMs")
 
-#Embeds and Arrays#
+
+#Embeds and Arrays######################################################################################################
 
 @client.command(pass_context=True, aliases=["t"])
 async def tip(ctx):
@@ -310,6 +387,149 @@ async def rules(ctx):
     embed2.add_field(name="[6.]", value="Rule 7 preceds rule 6", inline=False)
     await ctx.send(author, embed=embed2)
 
+#@client.command()
+#async def test(ctx):
+#  message = await ctx.send("hello")
+#  await asyncio.sleep(1)
+#  await message.edit(content="newcontent")
+
+@client.command()
+async def pauseChamp(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:pauseChamp:790088324789960714>")
+
+@client.command()
+async def Cap(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:me:787879095635410985>")
+
+
+@client.command()
+async def survey(ctx, text, *emojis: discord.Emoji):
+    await ctx.channel.purge(limit=1)
+    msg = await ctx.send(text)
+    for emoji in emojis:
+        await msg.add_reaction(emoji)
+
+@client.command()
+async def poll(ctx, question, option1=None, option2=None, option3=None, option4=None, option5=None, option6=None, option7=None, option8=None, option9=None, option10=None ):
+    author = ctx.message.author
+    if option1==None and option2==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**✅ = Yes**\n**❎ = No**")
+        await message.add_reaction('✅')
+        await message.add_reaction('❎')
+    elif option3==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**<:1_:789309819685044235> = {option1}**\n**<:2_:789309819935916062> = {option2}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+    elif option4==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+    elif option5==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>')    
+    elif option6==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>') 
+        await message.add_reaction('<:5_:789309857135722527>')   
+    elif option7==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>') 
+        await message.add_reaction('<:5_:789309857135722527>')
+        await message.add_reaction('<:6_:789309819651489813>')   
+    elif option8==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>') 
+        await message.add_reaction('<:5_:789309857135722527>')
+        await message.add_reaction('<:6_:789309819651489813>')
+        await message.add_reaction('<:7_:789309819739177002>')  
+    elif option9==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>') 
+        await message.add_reaction('<:5_:789309857135722527>')
+        await message.add_reaction('<:6_:789309819651489813>')
+        await message.add_reaction('<:7_:789309819739177002>')    
+        await message.add_reaction('<:8_:789309819601289217>')
+    elif option10==None:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**\n**<:9_:789309819936702495> = {option9}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>') 
+        await message.add_reaction('<:5_:789309857135722527>')
+        await message.add_reaction('<:6_:789309819651489813>')
+        await message.add_reaction('<:7_:789309819739177002>')    
+        await message.add_reaction('<:8_:789309819601289217>')
+        await message.add_reaction('<:9_:789309819936702495>')
+    else:
+        await ctx.channel.purge(limit=1)
+        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**\n**<:9_:789309819936702495> = {option9}**\n**<:10:789309819941027870> = {option10}**")
+        await message.add_reaction('<:1_:789309819685044235>')
+        await message.add_reaction('<:2_:789309819935916062>')
+        await message.add_reaction('<:3_:789309857369948250>')
+        await message.add_reaction('<:4_:789309856960086018>')
+        await message.add_reaction('<:5_:789309857135722527>')
+        await message.add_reaction('<:6_:789309819651489813>')
+        await message.add_reaction('<:7_:789309819739177002>')
+        await message.add_reaction('<:8_:789309819601289217>')
+        await message.add_reaction('<:9_:789309819936702495>')
+        await message.add_reaction('<:10:789309819941027870>')
+
+    
+@client.command(pass_context=True)
+async def credits(ctx):
+    embed5 = discord.Embed(color = discord.Color.dark_blue())
+    embed5.set_author(name="Akov \n 1.0.2")
+    embed5.add_field(name="Development", value="Cap_Russia", inline=False)
+    message = await ctx.send(embed=embed5)
+    embed5.add_field(name="Program Management", value="Cap_Russia", inline=False)
+    await asyncio.sleep(0.4)
+    await message.edit(embed=embed5)
+    embed5.add_field(name="Testing", value="Cap_Russia \n NotaBot", inline=False)
+    await asyncio.sleep(0.4)
+    await message.edit(embed=embed5)    
+    embed5.add_field(name="Multimedia", value="Cap_Russia \n Unsplash ", inline=False)
+    await asyncio.sleep(0.7)
+    await message.edit(embed=embed5)
+    embed5.add_field(name="Beta Testers", value="Cap_Russia \n Not a bot \n drongo \n resident hacker \n epic gamer", inline=False)
+    await asyncio.sleep(1)
+    await message.edit(embed=embed5)
+    embed5.add_field(name="Novelty and Functionality", value="Cap_Russia \n drongo \n resident hacker \n Calm Leo \n Amy \n kuzz", inline=False)
+    await asyncio.sleep(1)
+    await message.edit(embed=embed5)
+    embed5.add_field(name="Documentation", value="Cap_Russia \n resident hacker", inline=False)
+    await asyncio.sleep(0.1)
+    await message.edit(embed=embed5)
+    embed5.add_field(name="Special Thanks to", value="Cap_Russia \n resident hacker \n epic gamer \n drongo", inline=False)
+    await asyncio.sleep(0.7)
+    await message.edit(embed=embed5)
+    StopAsyncIteration
     
 client.run(Token)
 #https://discordpy.readthedocs.io/en/latest/faq.html
