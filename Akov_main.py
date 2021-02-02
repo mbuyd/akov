@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 import asyncio
 import json
@@ -6,9 +7,12 @@ from random import choice, random
 import discord
 from discord.ext import commands, tasks
 from discord.utils import find, get
+from requests import get as get2
+from ignore import *
 
 client = commands.Bot(command_prefix = ".")
-
+#client.remove_command("help")
+client.add_command(reddit)
 
 Token = json.load(open("secrets.json", "r"))["Token"]
 dic = json.load(open("dictionary.json"))
@@ -33,8 +37,10 @@ test1 = dic["test1"]
 chtest1 = client.get_channel(test1)
 internshipchan = dic["internshipchan"]
 botchan = dic["botchan"]
+botlandchan = dic["botlandchan"]
 updatechan = dic["updatechan"]
 foodchan = dic["foodchan"]
+nsfwchan = dic["nsfwchan"]
 internreply = dic["internreply"]
 shawn_reply = dic["shawn_reply"]
 bacon = dic["bacon"]
@@ -187,7 +193,6 @@ async def c(ctx, amount=5):
     else:
         await client.process_commands(message)
 
-
 @client.command(aliases=["b"])
 async def bing(ctx):
     await ctx.send(f"Bong! {round(client.latency *1000)} ms" )
@@ -201,7 +206,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.2")
+    await ctx.send("1.0.3")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -227,9 +232,8 @@ async def tts(ctx,* , message):
     else:
         await client.process_commands(message)
 
-
 @client.command(pass_context=True)
-async def ghu(ctx):
+async def thanos(ctx):
             await ctx.channel.purge(limit=1)
             await ctx.send(tg1) 
             await asyncio.sleep(10)
@@ -239,10 +243,15 @@ async def ghu(ctx):
 @client.command(pass_context=True)
 async def test(ctx, member: discord.Member):
             await ctx.send (member)
-            await ctx.send(member.id) 
+            await ctx.send(member.id)
+            await ctx.send(embed6) 
+
+#@client.command(pass_context=True)
+#async def testembed(ctx):
+#            await ctx.send(embed6) 
 
 @client.command(pass_context=True)
-async def check_prostate(ctx, member: discord.Member):
+async def probe(ctx, member: discord.Member):
             message = await ctx.send(f"Probing {member}'s prostate.")
             await asyncio.sleep(0.3)
             await message.edit(content=f"Probing {member}'s prostate..")
@@ -312,14 +321,14 @@ async def pnote(ctx,*, message):
     await author.send(f"{message}")
     await ctx.channel.purge(limit=1)
     
-@client.command()
-async def pm(ctx, member: discord.Member, *, content):
+@client.command(pass_context=True, aliases=["pm"])
+async def pmessage(ctx, member: discord.Member, *, content):
     await ctx.channel.purge(limit=1)
     channel = await member.create_dm() 
     await channel.send(content)
 
-@client.command()
-async def m(ctx, member: discord.Member, *, content):
+@client.command(pass_context=True, aliases=["m"])
+async def message(ctx, member: discord.Member, *, content):
     channel = await member.create_dm() 
     await channel.send(content)
     await ctx.send("message sent to DMs")
@@ -356,24 +365,29 @@ async def commands(ctx):
     embed1.set_author(name="Help")
     embed1.add_field(name="v", value="Display bot version", inline=True)
     embed1.add_field(name="clear", value="Clear some messages", inline=True)
-    #embed1.add_field(name="pclear", value="Clear messages like a ninja", inline=True)
+    #embed1.add_field(name="c", value="Clear messages like a ninja", inline=True)
     embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
     embed1.add_field(name='note ', value="dm yourself a note", inline=True)
-    #embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
-    #embed1.add_field(name="pm", value="Send a private direct msg", inline=True)
+    embed1.add_field(name='pnote ', value="dm yourself a private note", inline=True)
+    embed1.add_field(name="pm", value="Send a private direct msg", inline=True)
     embed1.add_field(name="m", value="Send a direct msg", inline=True)   
     embed1.add_field(name="dice", value="Roll the dice", inline=True)
     embed1.add_field(name="cointoss", value="Toss a coin", inline=True)   
     embed1.add_field(name="meme", value="look at dank memes", inline=True)
     embed1.add_field(name="tip", value="Get some tips", inline=True)
     embed1.add_field(name="quote", value="Hear an infamous quote", inline=True)
+    embed1.add_field(name="reddit <subrreddit>", value="See a recent image from your favorite subreddit", inline=True)
+    embed1.add_field(name="probe <member>", value="Check a friend's prostate*", inline=True)
+    embed1.add_field(name="poll", value="Run a channel poll", inline=True)
+    embed1.add_field(name="quote", value="Hear an infamous quote", inline=True)
+    embed1.add_field(name="credits", value="Check out who contributes to the bot", inline=True)
     
     await ctx.send(author, embed=embed1)
     await ctx.send("Type .help command for more info on a command.")
 
-@client.command(pass_context=True, aliases=["r"])
+@client.command(pass_context=True)
 async def rules(ctx):
     author = ctx.message.author
     embed2 = discord.Embed(color = discord.Color.dark_blue())
@@ -404,102 +418,122 @@ async def Cap(ctx):
     await ctx.send ("<:me:787879095635410985>")
 
 
-@client.command()
-async def survey(ctx, text, *emojis: discord.Emoji):
-    await ctx.channel.purge(limit=1)
-    msg = await ctx.send(text)
-    for emoji in emojis:
-        await msg.add_reaction(emoji)
+#@client.command()
+#async def survey(ctx, text, *emojis: discord.Emoji):
+#    await ctx.channel.purge(limit=1)
+#    msg = await ctx.send(text)
+#    for emoji in emojis:
+#        await msg.add_reaction(emoji)
 
 @client.command()
 async def poll(ctx, question, option1=None, option2=None, option3=None, option4=None, option5=None, option6=None, option7=None, option8=None, option9=None, option10=None ):
     author = ctx.message.author
+    await ctx.channel.purge(limit=1)
+    embed6 = discord.Embed(color = discord.Color.dark_blue())
+    embed6.set_author(name=f"{question}")
+    o1=0
+    o2=0
+    o3=0
+    o4=0
+    o5=0
+    o6=0
+    o7=0
+    o8=0
+    o9=0
+    o10=0
+    #embed6.add_field(name="Development", value="Cap_Russia", inline=False)
     if option1==None and option2==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**✅ = Yes**\n**❎ = No**")
+        #<:yes:802705662017798164>,<:no:802705662017798164>
+        embed6.add_field(name= "options",value="**✅ = Yes**\n**❌ = No**")
+        message = await ctx.send(embed=embed6)
+        pollid = message.id
+        await ctx.send (pollid)
         await message.add_reaction('✅')
-        await message.add_reaction('❎')
+        await message.add_reaction('❌')
+        #if emoji == "✅":embed6.add_field(name= "options",value=f"**✅ = Yes** {o1+1}\n**❌ = No {o2}**") 
+        #if emoji == "❌":embed6.add_field(name= "options",value=f"**✅ = Yes** {o1}\n**❌ = No {o2+1}**") 
+        #await message.edit(embed=embed6)
     elif option3==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**<:1_:789309819685044235> = {option1}**\n**<:2_:789309819935916062> = {option2}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
     elif option4==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**\n**3⃣ = {option3}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
     elif option5==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>')    
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣')    
     elif option6==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>') 
-        await message.add_reaction('<:5_:789309857135722527>')   
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣') 
+        await message.add_reaction('5⃣')   
     elif option7==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**<:2_:789309819935916062> = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>') 
-        await message.add_reaction('<:5_:789309857135722527>')
-        await message.add_reaction('<:6_:789309819651489813>')   
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**\n**6⃣ = {option6}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣') 
+        await message.add_reaction('5⃣')
+        await message.add_reaction('6⃣')   
     elif option8==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>') 
-        await message.add_reaction('<:5_:789309857135722527>')
-        await message.add_reaction('<:6_:789309819651489813>')
-        await message.add_reaction('<:7_:789309819739177002>')  
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**:two: = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**\n**6⃣ = {option6}**\n**7⃣ = {option7}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣') 
+        await message.add_reaction('5⃣')
+        await message.add_reaction('6⃣')
+        await message.add_reaction('7⃣')  
     elif option9==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>') 
-        await message.add_reaction('<:5_:789309857135722527>')
-        await message.add_reaction('<:6_:789309819651489813>')
-        await message.add_reaction('<:7_:789309819739177002>')    
-        await message.add_reaction('<:8_:789309819601289217>')
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**:two: = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**\n**6⃣ = {option6}**\n**7⃣ = {option7}**\n**8⃣ = {option8}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣') 
+        await message.add_reaction('5⃣')
+        await message.add_reaction('6⃣')
+        await message.add_reaction('7⃣')    
+        await message.add_reaction('8⃣')
     elif option10==None:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**\n**<:9_:789309819936702495> = {option9}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>') 
-        await message.add_reaction('<:5_:789309857135722527>')
-        await message.add_reaction('<:6_:789309819651489813>')
-        await message.add_reaction('<:7_:789309819739177002>')    
-        await message.add_reaction('<:8_:789309819601289217>')
-        await message.add_reaction('<:9_:789309819936702495>')
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**:two: = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**\n**6⃣ = {option6}**\n**7⃣ = {option7}**\n**8⃣ = {option8}**\n**9⃣ = {option9}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣') 
+        await message.add_reaction('5⃣')
+        await message.add_reaction('6⃣')
+        await message.add_reaction('7⃣')    
+        await message.add_reaction('8⃣')
+        await message.add_reaction('9⃣')
     else:
-        await ctx.channel.purge(limit=1)
-        message = await ctx.send(f"```{author} Started a New poll: \n{question}```\n**:one: = {option1}**\n**:two: = {option2}**\n**<:3_:789309857369948250> = {option3}**\n**<:4_:789309856960086018> = {option4}**\n**<:5_:789309857135722527> = {option5}**\n**<:6_:789309819651489813> = {option6}**\n**<:7_:789309819739177002> = {option7}**\n**<:8_:789309819601289217> = {option8}**\n**<:9_:789309819936702495> = {option9}**\n**<:10:789309819941027870> = {option10}**")
-        await message.add_reaction('<:1_:789309819685044235>')
-        await message.add_reaction('<:2_:789309819935916062>')
-        await message.add_reaction('<:3_:789309857369948250>')
-        await message.add_reaction('<:4_:789309856960086018>')
-        await message.add_reaction('<:5_:789309857135722527>')
-        await message.add_reaction('<:6_:789309819651489813>')
-        await message.add_reaction('<:7_:789309819739177002>')
-        await message.add_reaction('<:8_:789309819601289217>')
-        await message.add_reaction('<:9_:789309819936702495>')
-        await message.add_reaction('<:10:789309819941027870>')
+        embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**:two: = {option2}**\n**3⃣ = {option3}**\n**4⃣ = {option4}**\n**5⃣ = {option5}**\n**6⃣ = {option6}**\n**7⃣ = {option7}**\n**8⃣ = {option8}**\n**9⃣ = {option9}**\n**🔟 = {option10}**")
+        message = await ctx.send(embed=embed6)
+        await message.add_reaction('1⃣')
+        await message.add_reaction('2⃣')
+        await message.add_reaction('3⃣')
+        await message.add_reaction('4⃣')
+        await message.add_reaction('5⃣')
+        await message.add_reaction('6⃣')
+        await message.add_reaction('7⃣')
+        await message.add_reaction('8⃣')
+        await message.add_reaction('9⃣')
+        await message.add_reaction('🔟')
 
     
 @client.command(pass_context=True)
