@@ -1,6 +1,6 @@
 # akov
 
-Discord Bot for DUDES of 708 discord server
+Discord Bot for the DUDES of 708 discord server
 
 ## Features
 ```
