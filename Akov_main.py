@@ -6,6 +6,7 @@ from random import choice, random
 import discord
 from discord.ext import commands, tasks
 from discord.utils import find, get
+import requests
 from requests import get as get2
 #from ignore import *
 
