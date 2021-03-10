@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands, tasks
 from discord.utils import find, get
 from requests import get as get2
-from ignore import *
+#from ignore import *
 
 client = commands.Bot(command_prefix = ".", case_insensitive=True)
 #client.remove_command("help")
