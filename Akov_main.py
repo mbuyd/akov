@@ -45,6 +45,7 @@ botchan = dic["botchan"]
 botlandchan = dic["botlandchan"]
 updatechan = dic["updatechan"]
 foodchan = dic["foodchan"]
+adminchan = dic["adminchan"]
 internreply = dic["internreply"]
 shawn_reply = dic["shawn_reply"]
 bacon = dic["bacon"]
@@ -56,6 +57,9 @@ prostate = dic["Prostate"]
 t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
+
+serverid = client.get_guild(691848461217169438)
+
 
 #Events####################################################################################################################
 
@@ -72,12 +76,14 @@ async def on_member_join(member):
 
     
 @client.event
-async def on_member_remove(member):
-    chupdate = client.get_channel(updatechan)
-    await chupdate.send(f'{member} {choice(farewell)}')
-    #print(f'{member} has left the server.')
-    channel = await member.create_dm() 
-    await channel.send("You are such a Bruh")
+async def on_member_remove(server, member):
+    if server == serverid:
+        await client.get_channel(adminchan).send(f'{member} {choice(farewell)}')
+        #print(f'{member} has left the server.')
+        channel = await member.create_dm() 
+        await channel.send("You are such a Bruh")
+    else:
+        return
 
 
 @tasks.loop(hours=8)
@@ -113,7 +119,11 @@ async def on_message(message):
     elif akov in message.content.lower() or "akov" in message.content.lower():
         response = [f"<@{message.author.id}> Ya Wassup",
                     f"<@{message.author.id}> Tech Support here, how can I help you",
-                    f"<@{message.author.id}> I thought you forgot about me :robot: :cry:"]
+                    f"<@{message.author.id}> I thought you forgot about me :robot: :cry:",
+                    f"<@{message.author.id}> No",
+                    f"<@{message.author.id}> Yes"]
+        await message.channel.trigger_typing()
+        await asyncio.sleep(4) 
         await message.channel.send(choice(response))
         await client.process_commands(message)
     elif "internship" in message.content.lower() or "intern" in message.content.lower() or "opportunity" in message.content.lower() or "event" in message.content.lower() or "apply" in message.content.lower() or "job" in message.content.lower() or "program" in message.content.lower():
@@ -213,7 +223,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.4")
+    await ctx.send("1.0.5")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -248,16 +258,6 @@ async def thanos(ctx):
             StopAsyncIteration
 
 @client.command(pass_context=True)
-async def test(ctx, member: discord.Member):
-            await ctx.send (member)
-            await ctx.send(member.id)
-            
-
-#@client.command(pass_context=True)
-#async def testembed(ctx):
-#            await ctx.send(embed6) 
-
-@client.command(pass_context=True)
 async def probe(ctx, member: discord.Member):
             message = await ctx.send(f"Probing {member}'s prostate.")
             await asyncio.sleep(0.3)
@@ -290,6 +290,20 @@ async def probe(ctx, member: discord.Member):
 #  message = await ctx.send("hello")
 #  await asyncio.sleep(1)
 #  await message.edit(content="newcontent")
+
+#@client.command()
+#async def test2(ctx):
+#    await ctx.channel.trigger_typing()
+#    await asyncio.sleep(4) 
+#    await ctx.send ("typetest complete")
+
+#@client.command()
+#async def test3(ctx):
+#    if ctx.channel.is_news():
+#        await ctx.send ("yes this is the anouncement channel")
+#    else:
+#        await ctx.send ("no")
+
 
 #Random Commands####################################################################################################
 
@@ -644,9 +658,43 @@ async def hdh(ctx, place, item):
 
     else: await ctx.send (f"{place} is not yet in the database")
 
-@client.command(pass_context=True)
-async def hotplate(ctx, message):
-    return
+#@client.command(pass_context=True)
+#async def hotplate(ctx):
+#    author = ctx.message.author
+#    await open_list(ctx.author)
+
+#    users = await get_list_data()
+#    embed7 = discord.Embed(color = discord.Color.dark_green())
+#    embed7.set_author(ctx.author)
+#    embed7.add_field(name = "Hotplate", value = f"{item} @ {place}")
+#    await ctx.send(embed = embed7)
+
+#@client.command()
+#async def add(ctx, item, place):
+#    users = await get_list_data
+#    await ctx.send (f"{item} @ {place} was added to your hotplate")
+#    users[str(user.id)]["hotplate"] = item, place
+#    with open("hotplate.json","w") as h:
+#        json.dump(users,h)
+
+#async def open_list(user):
+#    users = await get_list_data()
+    
+#    if str(user.id) in users:
+#        return False
+#    else:
+#        users[str(user.id)]["hotplate"]
+
+#    with open("hotplate.json","w") as h:
+#        json.dump(users,h)
+#    return True
+
+#async def get_list_data():
+#    with open("hotplate.json","r") as h:
+#        users = json.load(h)
+#    return users
+
+    #12:00 https://www.youtube.com/watch?v=HPaadO_sRD4
 
 @client.command(pass_context=True, aliases=["r"])
 async def reddit(ctx, message):
@@ -655,7 +703,8 @@ async def reddit(ctx, message):
     if (reddit_post[0]['data']['children'][0]['data']['over_18']):
         if ctx.channel.is_nsfw():
             try:
-                await ctx.send(reddit_post[0]['data']['children'][0]['data']['url'])
+                await ctx.send ("https://media1.giphy.com/media/Ju7l5y9osyymQ/200.webp?cid=ecf05e47odh3oakayaeewhq3nd5so2hflyfhzmuwmt4ony9s&rid=200.webp")
+                #await ctx.send(reddit_post[0]['data']['children'][0]['data']['url'])
             except:
                 await ctx.send("Subreddit does not exist \n Try another")
     else: 
@@ -663,6 +712,58 @@ async def reddit(ctx, message):
             await ctx.send(reddit_post[0]['data']['children'][0]['data']['url'])
         except:
             await ctx.send("Subreddit does not exist \n Try another")
+
+
+#Econ#
+
+@client.command(pass_context=True,aliases=["bal"])
+async def balance(ctx):
+    await open_account(ctx.author)
+    user = ctx.author
+    users = await get_bank_data()
+    balance_amt = users[str(user.id)]["balance"]
+
+    embed8 = discord.Embed(title = f"{ctx.author.name}'s balance",color = discord.Color.dark_green())
+    embed8.set_author(ctx.author)
+    embed8.add_field(name = "Balance", value = balance_amt)
+    await ctx.send(embed = embed8)
+
+@client.command(aliases=["sftty"])
+async def skip_filing_taxes_this_year(ctx):
+    await open_account(ctx.author)
+    user = ctx.author
+    users = await get_bank_data()
+    earnings = random.range(101)
+    await ctx.send(f"your insignificant financial presence in this world went unnoticed by the IRA. \n You managed to save your precious {earnings} dogecoins.")
+    users[str(user.id)]["balance"] += earnings
+
+async def open_account(user):
+    users = await get_bank_data()
+    if str(user.id) in users:
+        return False
+    else:
+        users[str(users.id)] = {}
+        users[str(users.id)]["balance"] = 0
+    with open ("treasury.json","w") as f:
+        json.dump(users,f)
+    return True
+
+async def get_bank_data():
+    with open("treasury.json","r") as f:
+        users = json.load(f)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 client.run(Token)
