@@ -57,6 +57,7 @@ prostate = dic["Prostate"]
 t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
+hp = dic["hotplate"]
 
 serverid = client.get_guild(691848461217169438)
 
@@ -223,7 +224,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.5")
+    await ctx.send("1.0.5.1")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -658,8 +659,12 @@ async def hdh(ctx, place, item):
 
     else: await ctx.send (f"{place} is not yet in the database")
 
-#@client.command(pass_context=True)
-#async def hotplate(ctx):
+@client.command(pass_context=True)
+async def hotplate(ctx):
+    await ctx.trigger_typing()
+    await asyncio.sleep(10) 
+    await ctx.send (f'{choice(hp)}')
+    return
 #    author = ctx.message.author
 #    await open_list(ctx.author)
 
@@ -698,7 +703,7 @@ async def hdh(ctx, place, item):
 
 @client.command(pass_context=True, aliases=["r"])
 async def reddit(ctx, message):
-    headers = {'User-Agent': 'Akov Anonymous Version 1.0.3'}
+    headers = {'User-Agent': 'Akov Anonymous Version 1.0.5'}
     reddit_post = get2(f'https://www.reddit.com/r/{message}/random.json', headers = headers).json()
     if (reddit_post[0]['data']['children'][0]['data']['over_18']):
         if ctx.channel.is_nsfw():
