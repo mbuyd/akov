@@ -57,7 +57,7 @@ prostate = dic["Prostate"]
 t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
-hp = dic["hotplate"]
+#hp = dic["hotplate"]
 
 serverid = client.get_guild(691848461217169438)
 
@@ -224,7 +224,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.5.1")
+    await ctx.send("1.0.5")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -659,12 +659,12 @@ async def hdh(ctx, place, item):
 
     else: await ctx.send (f"{place} is not yet in the database")
 
-@client.command(pass_context=True)
-async def hotplate(ctx):
-    await ctx.trigger_typing()
-    await asyncio.sleep(10) 
-    await ctx.send (f'{choice(hp)}')
-    return
+#@client.command(pass_context=True)
+#async def hotplate(ctx):
+#    await ctx.trigger_typing()
+#    await asyncio.sleep(10) 
+#    await ctx.send (f'{choice(hp)}')
+#    return
 #    author = ctx.message.author
 #    await open_list(ctx.author)
 
@@ -708,8 +708,8 @@ async def reddit(ctx, message):
     if (reddit_post[0]['data']['children'][0]['data']['over_18']):
         if ctx.channel.is_nsfw():
             try:
-                await ctx.send ("https://media1.giphy.com/media/Ju7l5y9osyymQ/200.webp?cid=ecf05e47odh3oakayaeewhq3nd5so2hflyfhzmuwmt4ony9s&rid=200.webp")
-                #await ctx.send(reddit_post[0]['data']['children'][0]['data']['url'])
+                #await ctx.send ("https://media1.giphy.com/media/Ju7l5y9osyymQ/200.webp?cid=ecf05e47odh3oakayaeewhq3nd5so2hflyfhzmuwmt4ony9s&rid=200.webp")
+                await ctx.send(reddit_post[0]['data']['children'][0]['data']['url'])
             except:
                 await ctx.send("Subreddit does not exist \n Try another")
     else: 
