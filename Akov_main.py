@@ -46,6 +46,11 @@ botlandchan = dic["botlandchan"]
 updatechan = dic["updatechan"]
 foodchan = dic["foodchan"]
 adminchan = dic["adminchan"]
+log708 = dic["log708"]
+log1 = dic["log1"]
+logbit = dic["logbit"]
+loggid = dic["loggid"]
+logamy = dic["logamy"]
 internreply = dic["internreply"]
 shawn_reply = dic["shawn_reply"]
 bacon = dic["bacon"]
@@ -58,9 +63,11 @@ t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
 #hp = dic["hotplate"]
-
-serverid = client.get_guild(691848461217169438)
-
+#serverid1 = client.get_guild.(691848461217169438) #Dudesof708
+#serverid2 = client.get_guild.(758512926226120727) #Server1
+#serverid3 = client.get_guild.(829215437295452200) #Serverbit
+#serverid4 = client.get_guild.(548523285172715550) #Servergid
+#serverid5 = client.get_guild.(791803503059533825) #Serveramy
 
 #Events####################################################################################################################
 
@@ -74,13 +81,41 @@ async def on_member_join(member):
     #print(f'{member} has joined the server.')
     channel = await member.create_dm() 
     await channel.send("Welcome to the 708 server \n use the prefixes (!help, ~help, .commands) to trigger some of our bots")
+    if member.guild.id == 691848461217169438:
+        await client.get_channel(log708).send(f'{member} {"joined the server"}')
+    elif member.guild.id == 758512926226120727:
+        await client.get_channel(log1).send(f'{member} {"joined the server"}')
+    elif member.guild.id == 829215437295452200:
+        await client.get_channel(logbit).send(f'{member} {"joined the server"}')
+    elif member.guild.id == 548523285172715550:
+        await client.get_channel(loggid).send(f'{member} {"joined the server"}')
+    elif member.guild.id == 791803503059533825:
+        await client.get_channel(logamy).send(f'{member} {"joined the server"}')
+    else:
+        return
 
-    
 @client.event
-async def on_member_remove(server, member):
-    if server == serverid:
+async def on_member_remove(member):
+    if member.guild.id == 691848461217169438:
         await client.get_channel(adminchan).send(f'{member} {choice(farewell)}')
+        await client.get_channel(log708).send(f'{member} {choice(farewell)}')
         #print(f'{member} has left the server.')
+        channel = await member.create_dm() 
+        await channel.send("You are such a Bruh")
+    elif member.guild.id == 758512926226120727:
+        await client.get_channel(log1).send(f'{member} {choice(farewell)}')
+        channel = await member.create_dm() 
+        await channel.send("You are such a Bruh")
+    elif member.guild.id == 829215437295452200:
+        await client.get_channel(logbit).send(f'{member} {choice(farewell)}')
+        channel = await member.create_dm() 
+        await channel.send("You are such a Bruh")
+    elif member.guild.id == 548523285172715550:
+        await client.get_channel(loggid).send(f'{member} {choice(farewell)}')
+        channel = await member.create_dm() 
+        await channel.send("You are such a Bruh")
+    elif member.guild.id == 791803503059533825:
+        await client.get_channel(logamy).send(f'{member} {choice(farewell)}')
         channel = await member.create_dm() 
         await channel.send("You are such a Bruh")
     else:
@@ -179,7 +214,7 @@ async def on_message(message):
         if emoji:
             await message.add_reaction(emoji)
             await client.process_commands(message)
-            pass
+        pass
     elif message.author.id == Sha:
         if random() < 0.20:
             await message.channel.send (choice(shawn_response))
@@ -199,6 +234,29 @@ async def on_message(message):
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
     await ctx.send(f"{ctx.author} cleared {amount} messages \n      **LIKE A BOSS**")
+
+@client.command(aliases=["g"])
+async def guilds(ctx):
+    author = ctx.message.author.id
+    if author != Max:
+        pass
+    elif author == Max:
+        await ctx.send(client.guilds)
+        return
+
+@client.command(aliases=["i"])
+async def invite(ctx):
+    author = ctx.message.author.id
+    if author != Max:
+        pass
+    elif author == Max:
+        for guild in client.guilds:
+            try:
+                channel = guild.channels[2]
+                invite = await channel.create_invite()
+                await ctx.send (f'{guild}, {invite}')
+            except:
+                pass
 
 @client.command()
 async def c(ctx, amount=5):
@@ -224,7 +282,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.5")
+    await ctx.send("1.0.6")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -433,6 +491,33 @@ async def Cap(ctx):
     await ctx.channel.purge(limit=1)
     await ctx.send ("<:me:787879095635410985>")
 
+@client.command()
+async def sheesh(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:sheesh:843332600600592414>")
+
+@client.command()
+async def sheeesh(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:sheeesh:843332085502050305>")
+
+@client.command()
+async def sus(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:sus:843331332967759872>")
+
+@client.command()
+async def minecraft(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:minecraft:843330359201759242>")
+
+@client.command()
+async def gh(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:gh:787879076521050123>")
+
+
+
 
 #@client.command()
 #async def survey(ctx, text, *emojis: discord.Emoji):
@@ -440,6 +525,15 @@ async def Cap(ctx):
 #    msg = await ctx.send(text)
 #    for emoji in emojis:
 #        await msg.add_reaction(emoji)
+
+@client.command(aliases=["poll help", "help poll","helppoll"])
+async def pollhelp(ctx):
+    embed9 = discord.Embed(color = discord.Color.dark_blue())
+    embed9.set_author(name=f"Akov's Polls")
+    embed9.add_field(name= "Binary Poll",value='.poll "Type your question here"',inline=False)
+    embed9.add_field(name= "Multi Poll",value='.poll "Type your question here" "option 1" "option 2" "option 3"...',inline=False)
+    await ctx.send(embed=embed9)
+
 
 @client.command()
 async def poll(ctx, question, option1=None, option2=None, option3=None, option4=None, option5=None, option6=None, option7=None, option8=None, option9=None, option10=None ):
@@ -739,7 +833,7 @@ async def skip_filing_taxes_this_year(ctx):
     user = ctx.author
     users = await get_bank_data()
     earnings = random.range(101)
-    await ctx.send(f"your insignificant financial presence in this world went unnoticed by the IRA. \n You managed to save your precious {earnings} dogecoins.")
+    await ctx.send(f"your insignificant financial presence in this world went unnoticed by the IRS. \n You managed to save {earnings} of your dogecoins.")
     users[str(user.id)]["balance"] += earnings
 
 async def open_account(user):
