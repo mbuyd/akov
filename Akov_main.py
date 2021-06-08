@@ -152,16 +152,16 @@ async def on_message(message):
             await message.channel.send(f"<@{message.author.id}> Kinda sus of you to mention that game")
     elif message.content.endswith(" pic"):
         await message.channel.send("https://picsum.photos/200/300 \n ***MY MAN*** \n **Here** \n **You** \n **Go**")
-    elif akov in message.content.lower() or "akov" in message.content.lower():
-        response = [f"<@{message.author.id}> Ya Wassup",
-                    f"<@{message.author.id}> Tech Support here, how can I help you",
-                    f"<@{message.author.id}> I thought you forgot about me :robot: :cry:",
-                    f"<@{message.author.id}> No",
-                    f"<@{message.author.id}> Yes"]
-        await message.channel.trigger_typing()
-        await asyncio.sleep(4) 
-        await message.channel.send(choice(response))
-        await client.process_commands(message)
+    #elif akov in message.content.lower() or "akov" in message.content.lower():
+    #    response = [f"<@{message.author.id}> Ya Wassup",
+    #                f"<@{message.author.id}> Tech Support here, how can I help you",
+    #                f"<@{message.author.id}> I thought you forgot about me :robot: :cry:",
+    #                f"<@{message.author.id}> No",
+    #                f"<@{message.author.id}> Yes"]
+    #    await message.channel.trigger_typing()
+    #    await asyncio.sleep(4) 
+    #    await message.channel.send(choice(response))
+    #    await client.process_commands(message)
     elif "internship" in message.content.lower() or "intern" in message.content.lower() or "opportunity" in message.content.lower() or "event" in message.content.lower() or "apply" in message.content.lower() or "job" in message.content.lower() or "program" in message.content.lower():
         if message.author.id == Gid or message.author.id == Gis:
             if message.channel.id == internshipchan:
@@ -282,7 +282,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.6")
+    await ctx.send("1.0.6.1")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -526,7 +526,7 @@ async def gh(ctx):
 #    for emoji in emojis:
 #        await msg.add_reaction(emoji)
 
-@client.command(aliases=["poll help", "help poll","helppoll"])
+@client.command(aliases=["helppoll"])
 async def pollhelp(ctx):
     embed9 = discord.Embed(color = discord.Color.dark_blue())
     embed9.set_author(name=f"Akov's Polls")
@@ -534,6 +534,32 @@ async def pollhelp(ctx):
     embed9.add_field(name= "Multi Poll",value='.poll "Type your question here" "option 1" "option 2" "option 3"...',inline=False)
     await ctx.send(embed=embed9)
 
+#@client.event
+#async def on_command_error(ctx, error):
+#    if isinstance(error, commands.MissingRequiredArgument):
+#        embed10 = discord.Embed(color = discord.Color.red())
+#        embed10.set_author(name=f"Tech Support line")
+#        embed10.add_field(name= "Error",value='Missing a required argument.  Do >help',inline=False)
+#        await ctx.send(embed=embed10)
+#    elif isinstance(error, commands.CommandNotFound):
+#        embed10 = discord.Embed(color = discord.Color.red())
+#        embed10.set_author(name=f"Tech Support line")
+#        embed10.add_field(name= "Error",value='Not a valid command',inline=False)
+#        await ctx.send(embed=embed10)
+#        return
+#    elif isinstance(error, commands.MissingPermissions):
+#        embed10 = discord.Embed(color = discord.Color.red())
+#        embed10.set_author(name=f"Tech Support line")
+#        embed10.add_field(name= "Error",value="You do not have the appropriate permissions to run this command.",inline=False)
+#        await ctx.send(embed=embed10)
+#    elif isinstance(error, commands.BotMissingPermissions):
+#        embed10 = discord.Embed(color = discord.Color.red())
+#        embed10.set_author(name=f"Tech Support line")
+#        embed10.add_field(name= "Error",value="I don't have sufficient permissions!",inline=False)
+#        await ctx.send(embed=embed10)
+#    else:
+#        print("error not caught")
+#        print(error) 
 
 @client.command()
 async def poll(ctx, question, option1=None, option2=None, option3=None, option4=None, option5=None, option6=None, option7=None, option8=None, option9=None, option10=None ):
@@ -649,7 +675,7 @@ async def poll(ctx, question, option1=None, option2=None, option3=None, option4=
 @client.command(pass_context=True)
 async def credits(ctx):
     embed5 = discord.Embed(color = discord.Color.dark_blue())
-    embed5.set_author(name="Akov \n 1.0.2")
+    embed5.set_author(name="Akov \n 1.0.2.1")
     embed5.add_field(name="Development", value="Cap_Russia", inline=False)
     message = await ctx.send(embed=embed5)
     embed5.add_field(name="Program Management", value="Cap_Russia", inline=False)
