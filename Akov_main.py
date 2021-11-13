@@ -216,10 +216,14 @@ async def on_message(message):
             await client.process_commands(message)
         pass
     elif message.author.id == Sha:
-        if random() < 0.20:
-            await message.channel.send (choice(shawn_response))
+        if random() < 0.95:
+            await message.channel.send (choice(shawn_reply))
             await client.process_commands(message)
         pass
+    elif "valorant" in message.content.lower():
+        if random() < 0.90:
+            await message.channel.send (file=discord.File('ppthink.png'))
+            await client.process_commands(message)
     #elif "test" in message.content.lower():
         #if message.author.id == Max:
             #chtest1 = client.get_channel(test1)
@@ -282,7 +286,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.6.1")
+    await ctx.send("1.0.6.2")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -526,13 +530,7 @@ async def gh(ctx):
 #    for emoji in emojis:
 #        await msg.add_reaction(emoji)
 
-@client.command(aliases=["helppoll"])
-async def pollhelp(ctx):
-    embed9 = discord.Embed(color = discord.Color.dark_blue())
-    embed9.set_author(name=f"Akov's Polls")
-    embed9.add_field(name= "Binary Poll",value='.poll "Type your question here"',inline=False)
-    embed9.add_field(name= "Multi Poll",value='.poll "Type your question here" "option 1" "option 2" "option 3"...',inline=False)
-    await ctx.send(embed=embed9)
+
 
 #@client.event
 #async def on_command_error(ctx, error):
@@ -561,23 +559,14 @@ async def pollhelp(ctx):
 #        print("error not caught")
 #        print(error) 
 
+
+
 @client.command()
 async def poll(ctx, question, option1=None, option2=None, option3=None, option4=None, option5=None, option6=None, option7=None, option8=None, option9=None, option10=None ):
     author = ctx.message.author
     await ctx.channel.purge(limit=1)
     embed6 = discord.Embed(color = discord.Color.dark_blue())
     embed6.set_author(name=f"{question}")
-    o1=0
-    o2=0
-    o3=0
-    o4=0
-    o5=0
-    o6=0
-    o7=0
-    o8=0
-    o9=0
-    o10=0
-    #embed6.add_field(name="Development", value="Cap_Russia", inline=False)
     if option1==None and option2==None:
         #<:yes:802705662017798164>,<:no:802705662017798164>
         embed6.add_field(name= "options",value="**✅ = Yes**\n**❌ = No**")
@@ -586,9 +575,13 @@ async def poll(ctx, question, option1=None, option2=None, option3=None, option4=
         await ctx.send (pollid)
         await message.add_reaction('✅')
         await message.add_reaction('❌')
-        #if emoji == "✅":embed6.add_field(name= "options",value=f"**✅ = Yes** {o1+1}\n**❌ = No {o2}**") 
-        #if emoji == "❌":embed6.add_field(name= "options",value=f"**✅ = Yes** {o1}\n**❌ = No {o2+1}**") 
         #await message.edit(embed=embed6)
+    #elif isinstance(error, commands.MissingRequiredArgument):
+    #    embed9 = discord.Embed(color = discord.Color.red())
+    #    embed9.set_author(name=f"Akov's Polls")
+    #    embed9.add_field(name= "Binary Poll",value='.poll "Type your question here"',inline=False)
+    #    embed9.add_field(name= "Multi Poll",value='.poll "Type your question here" "option 1" "option 2" "option 3"...',inline=False)
+    #    await ctx.send(embed=embed9)
     elif option3==None:
         embed6.add_field(name= "options",value=f"**1⃣ = {option1}**\n**2⃣ = {option2}**")
         message = await ctx.send(embed=embed6)
@@ -675,7 +668,7 @@ async def poll(ctx, question, option1=None, option2=None, option3=None, option4=
 @client.command(pass_context=True)
 async def credits(ctx):
     embed5 = discord.Embed(color = discord.Color.dark_blue())
-    embed5.set_author(name="Akov \n 1.0.2.1")
+    embed5.set_author(name="Akov \n 1.0.6.2")
     embed5.add_field(name="Development", value="Cap_Russia", inline=False)
     message = await ctx.send(embed=embed5)
     embed5.add_field(name="Program Management", value="Cap_Russia", inline=False)
