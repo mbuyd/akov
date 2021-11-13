@@ -46,6 +46,7 @@ botlandchan = dic["botlandchan"]
 updatechan = dic["updatechan"]
 foodchan = dic["foodchan"]
 adminchan = dic["adminchan"]
+spamchan = dic["spamchan"]
 log708 = dic["log708"]
 log1 = dic["log1"]
 logbit = dic["logbit"]
@@ -224,6 +225,133 @@ async def on_message(message):
         if random() < 0.90:
             await message.channel.send (file=discord.File('ppthink.png'))
             await client.process_commands(message)
+
+    elif message.channel.id == spamchan:
+        if random() < 0.04 or "roll it" in message.content.lower():
+            await message.channel.send ("We're no strangers to love")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("You know the rules and so do I")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("A full commitment's what I'm thinking of")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("You wouldn't get this from any other guy")
+            await asyncio.sleep(0.4)
+            await message.channel.send ("I just wanna tell you how I'm feeling")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Gotta make you understand")
+            await asyncio.sleep(0.3)
+            
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna tell a lie and hurt you")
+            await asyncio.sleep(1)
+
+            await message.channel.send ("We've known each other for so long")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("Your heart's been aching but you're too shy to say it")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("Inside we both know what's been going on")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("We know the game and we're gonna play it")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("And if you ask me how I'm feeling")
+            await asyncio.sleep(0.7)
+            await message.channel.send ("Don't tell me you're too blind to see")
+            await asyncio.sleep(0.7)  
+
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna tell a lie and hurt you")
+            await asyncio.sleep(0.8)
+
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna tell a lie and hurt you")
+            await asyncio.sleep(1.3)
+
+            await message.channel.send ("Never gonna give, never gonna give \n *Give you up*  ")
+            await asyncio.sleep(0.8)
+
+            await message.channel.send ("Never gonna give, never gonna give \n *Give you up*  ")
+            await asyncio.sleep(1)
+
+            await message.channel.send ("We've known each other for so long")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("Your heart's been aching but you're too shy to say it")
+            await asyncio.sleep(0.8)
+            await message.channel.send ("Inside we both know what's been going on")
+            await asyncio.sleep(0.7)
+            await message.channel.send ("We know the game and we're gonna play it")
+            await asyncio.sleep(0.7)
+
+            await message.channel.send ("I just wanna tell you how I'm feeling")
+            await asyncio.sleep(0.7)
+            await message.channel.send ("Gotta make you understand")
+            await asyncio.sleep(0.5)
+
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna tell a lie and hurt you")
+            await asyncio.sleep(0.8)
+
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna tell a lie and hurt you")
+            await asyncio.sleep(0.8)
+
+            await message.channel.send ("Never gonna give you up")
+            await asyncio.sleep(0.3)
+            await message.channel.send ("Never gonna let you down")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("Never gonna run around and desert you")
+            await asyncio.sleep(0.6)
+            await message.channel.send ("Never gonna make you cry")
+            await asyncio.sleep(0.5)
+            await message.channel.send ("Never gonna say goodbye")
+            await asyncio.sleep(0.5)
+            await message.channel.send (file=discord.File('problem.png'))
+            await client.process_commands(message)
+
     #elif "test" in message.content.lower():
         #if message.author.id == Max:
             #chtest1 = client.get_channel(test1)
@@ -286,7 +414,7 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.6.2")
+    await ctx.send("1.0.6.3")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -668,7 +796,7 @@ async def poll(ctx, question, option1=None, option2=None, option3=None, option4=
 @client.command(pass_context=True)
 async def credits(ctx):
     embed5 = discord.Embed(color = discord.Color.dark_blue())
-    embed5.set_author(name="Akov \n 1.0.6.2")
+    embed5.set_author(name="Akov \n 1.0.6.3")
     embed5.add_field(name="Development", value="Cap_Russia", inline=False)
     message = await ctx.send(embed=embed5)
     embed5.add_field(name="Program Management", value="Cap_Russia", inline=False)
