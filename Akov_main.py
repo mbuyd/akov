@@ -60,6 +60,8 @@ interntrig = "internship" or "intern" or "opportunity" or "event" or "apply" or 
 waittrig = "wait, its all" or "wait its all" or "wait, it's all" or "wait it's all"
 Say = dic["Say"]
 prostate = dic["Prostate"]
+hp = dic["hp"]
+bin = dic["bin"]
 t = "a" or "b" or "c"
 test = dic["test"]
 status = cycle(json.load(open("Arrays/activity.json", "r"))["activity"])
@@ -353,7 +355,7 @@ async def on_message(message):
                 await asyncio.sleep(0.5)
                 await message.channel.send (file=discord.File('problem.png'))
                 await client.process_commands(message)
-            else:
+        else:
                 await client.process_commands(message)
 
     #elif "test" in message.content.lower():
@@ -413,12 +415,12 @@ async def bing(ctx):
 async def ping(ctx):
     await asyncio.sleep(4)
     await ctx.send(th)
-    await ctx.send(f"Yikes, look like your Pong is overdue \n {round(client.latency *69420)} ms \n \n \n try *Binging* next time instead")
+    await ctx.send(f"Yikes, look like your Pong is overdue \n {round(client.latency *69420)} ms \n \n \n try *Bing-ing* next time instead")
     StopAsyncIteration
 
 @client.command(pass_context=True)
 async def v(ctx):
-    await ctx.send("1.0.6.3")
+    await ctx.send("1.0.7")
 
 @client.command(pass_context=True, aliases=["s"])
 async def say(ctx,* , message):
@@ -548,34 +550,29 @@ async def message(ctx, member: discord.Member, *, content):
 
 @client.command(pass_context=True, aliases=["t"])
 async def tip(ctx):
-    author = ctx.message.author
     tip = json.load(open("Arrays/tip.json", "r"))["tip"]
     embed3 = discord.Embed(color = discord.Color.dark_blue())
     embed3.add_field(name=(f"Tip #{round(random()*1000)}"), value=choice(tip), inline=False)
-    await ctx.send(author, embed=embed3)
+    await ctx.send(embed=embed3)
 
 @client.command(pass_context=True)
 async def meme(ctx):
-    author = ctx.message.author
     meme = json.load(open("Arrays/meme.json", "r"))["meme"]
     await ctx.send(choice(meme))
 
 @client.command(pass_context=True, aliases=["q"])
 async def quote(ctx):
-    author = ctx.message.author
     quote = dic["quote"]
     embed4 = discord.Embed(color = discord.Color.dark_blue())
     embed4.add_field(name=(f"Quote #{round(random()*100)}"), value=choice(quote), inline=False)
-    await ctx.send(author, embed=embed4)
+    await ctx.send(embed=embed4)
 
 @client.command(pass_context=True)
 async def commands(ctx):
-    author = ctx.message.author
     embed1 = discord.Embed(color = discord.Color.dark_blue())
     embed1.set_author(name="Help")
     embed1.add_field(name="v", value="Display bot version", inline=True)
     embed1.add_field(name="clear", value="Clear some messages", inline=True)
-    #embed1.add_field(name="c", value="Clear messages like a ninja", inline=True)
     embed1.add_field(name="rules", value="View server rules", inline=True)
     embed1.add_field(name="bing", value="Returns Bong count", inline=True)
     embed1.add_field(name='query', value="Ask Akov a question", inline=True)
@@ -594,12 +591,11 @@ async def commands(ctx):
     embed1.add_field(name="quote", value="Hear an infamous quote", inline=True)
     embed1.add_field(name="credits", value="Check out who contributes to the bot", inline=True)
     
-    await ctx.send(author, embed=embed1)
+    await ctx.send(embed=embed1)
     await ctx.send("Type .help command for more info on a command.")
 
 @client.command(pass_context=True)
 async def rules(ctx):
-    author = ctx.message.author
     embed2 = discord.Embed(color = discord.Color.dark_blue())
     embed2.set_author(name="Rules")
     embed2.add_field(name="[1.]", value="Use common sense", inline=False)
@@ -609,13 +605,43 @@ async def rules(ctx):
     embed2.add_field(name="[5.]", value="Do not question the rules, you are playing with fire", inline=False)
     embed2.add_field(name="[7.]", value="Leo's order is not absolute", inline=False)
     embed2.add_field(name="[6.]", value="Rule 7 preceds rule 6", inline=False)
-    await ctx.send(author, embed=embed2)
+    await ctx.send(embed=embed2)
+
+@client.command(pass_context=True)
+async def w(ctx):
+    w = json.load(open("Arrays/w.json", "r"))["w"]
+    await ctx.send(choice(w))
+
+@client.command(pass_context=True)
+async def coord(ctx):
+    A = choice(bin)
+    if A == "-1":
+        Vara = int(-1)
+    else:
+        Vara = int(1)
+    B = choice(bin)
+    if B == "-1":
+        Varb = int(-1)
+    else:
+        Varb = int(1)
+    coordx = random()*90
+    coordz = random()*180
+    x = Vara*int(coordx)
+    z = Varb*int(coordz)
+#    coord = (f"{x},{z}")  
+#    await ctx.send(coord)
+    await ctx.send(f"https://www.latlong.net/c/?lat={x}&long={z}")
+
+
+
 
 #@client.command()
 #async def test(ctx):
 #  message = await ctx.send("hello")
 #  await asyncio.sleep(1)
 #  await message.edit(content="newcontent")
+
+#Emotes######################################################################################################
 
 @client.command()
 async def pauseChamp(ctx):
@@ -651,6 +677,21 @@ async def minecraft(ctx):
 async def gh(ctx):
     await ctx.channel.purge(limit=1)
     await ctx.send ("<:gh:787879076521050123>")
+
+@client.command()
+async def bruh(ctx):
+    await ctx.channel.purge(limit=1)
+    await ctx.send ("<:bruh:891214685410562049>")
+
+@client.command()
+async def ihop(ctx):
+    author = ctx.message.author
+    if author == Leo:
+        await ctx.channel.purge(limit=1)
+        await ctx.send ("<:ihop:996243511059943484>")
+    else: 
+        await client.process_commands(message)
+
 
 
 
@@ -800,7 +841,7 @@ async def poll(ctx, question, option1=None, option2=None, option3=None, option4=
 @client.command(pass_context=True)
 async def credits(ctx):
     embed5 = discord.Embed(color = discord.Color.dark_blue())
-    embed5.set_author(name="Akov \n 1.0.6.3")
+    embed5.set_author(name="Akov \n 1.0.7")
     embed5.add_field(name="Development", value="Cap_Russia", inline=False)
     message = await ctx.send(embed=embed5)
     embed5.add_field(name="Program Management", value="Cap_Russia", inline=False)
@@ -809,19 +850,19 @@ async def credits(ctx):
     embed5.add_field(name="Testing", value="Cap_Russia \n NotaBot", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
-    embed5.add_field(name="Multimedia", value="Cap_Russia \n Unsplash ", inline=False)
+    embed5.add_field(name="Multimedia and Date", value="Cap_Russia \n Unsplash \n HDH \n Google \n bananaforscale", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
-    embed5.add_field(name="Beta Testers", value="Cap_Russia \n Not a bot \n drongo \n resident hacker \n epic gamer", inline=False)
+    embed5.add_field(name="Beta Testers", value="Cap_Russia \n Not a bot \n Drongo \n resident hacker \n big poopy", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
-    embed5.add_field(name="Novelty and Functionality", value="Cap_Russia \n drongo \n resident hacker \n Calm Leo \n Amy \n kuzz", inline=False)
+    embed5.add_field(name="Novelty and Functionality", value="Cap_Russia \n Drongo \n resident hacker \n Calm Leo \n Amy \n kuzz", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
     embed5.add_field(name="Documentation", value="Cap_Russia \n resident hacker", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
-    embed5.add_field(name="Special Thanks to", value="Cap_Russia \n resident hacker \n epic gamer \n drongo", inline=False)
+    embed5.add_field(name="Special Thanks to", value="Cap_Russia \n resident hacker \n big poopy \n Drongo", inline=False)
     await asyncio.sleep(0.4)
     await message.edit(embed=embed5)
     StopAsyncIteration
@@ -904,12 +945,10 @@ async def hdh(ctx, place, item):
 
     else: await ctx.send (f"{place} is not yet in the database")
 
-#@client.command(pass_context=True)
-#async def hotplate(ctx):
-#    await ctx.trigger_typing()
-#    await asyncio.sleep(10) 
-#    await ctx.send (f'{choice(hp)}')
-#    return
+@client.command(pass_context=True)
+async def hotplate(ctx):
+    await ctx.send (f'{choice(hp)}')
+    return
 #    author = ctx.message.author
 #    await open_list(ctx.author)
 
