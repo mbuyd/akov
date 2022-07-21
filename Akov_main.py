@@ -179,6 +179,13 @@ async def on_message(message):
             await message.channel.send(choice(bacon))
             await client.process_commands(message)
         pass
+    elif "ihop" in message.content.lower():
+        if message.author.id == Leo:
+            await message.channel.purge(limit=1)
+            await message.channel.send ("<:ihop:996243511059943484>")
+        else: 
+            await client.process_commands(message)
+            pass
     elif "wait its all" in message.content.lower() or "wait, its all" in message.content.lower() or "wait, it's all" in message.content.lower() or "wait its all" in message.content.lower():
         if random() < 0.7:
             await message.channel.send ("always has been")
